@@ -5,9 +5,14 @@ Gem::Specification.new do |s|
   s.date = '2013-01-15'
   s.summary     = 'International Trade'
   s.description = 'Solution to puzzle #1 - International trade'
+
+  s.required_ruby_version = '>= 1.9.3'
+
   s.authors = ['Wil Boayue']
   s.email   = 'wil.boayue@gmail.com'
   s.files = Dir['lib/**/*.rb', 'bin/*', 'LICENSE', '*.md']
   s.license = 'MIT'
   s.homepage = 'https://github.com/wboayue/puzzlenode-solutions'
+
+  s.add_dependency 'nokogiri'
 end
