@@ -1,4 +1,6 @@
-puzzlenode-solutions
-====================
+Puzzle Node Solutions
+=====================
 
-Puzzle node solutions
+Ruby solutions to [puzzlenode.com](http://puzzlenode.com) puzzles.
+
+> PuzzleNode is a site for coders who enjoy working on challenging problems ...
