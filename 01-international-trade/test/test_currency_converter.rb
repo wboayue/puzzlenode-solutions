@@ -3,15 +3,6 @@ require 'minitest/autorun'
 
 require 'international_trade'
 
-
-def assert_supports_conversions(pairs)
-  pairs.each do |from, to|
-    it "should support conversion from #{from} to #{to}" do
-      assert @currency_converter.supports?(from, to), "does not support conversion from #{from} to #{to}"
-    end
-  end
-end        
-
 describe CurrencyConverter do
 
   before do
@@ -28,16 +19,24 @@ describe CurrencyConverter do
     before do
     end
 
-    describe "should support explicit conversions" do
-      explicit_conversion_pairs = [[:aud, :cad], [:cad, :usd], [:usd, :cad]]
+    describe "should support defined conversions" do
+      defined_conversions = [[:aud, :cad], [:cad, :usd], [:usd, :cad]]
 
-      assert_supports_conversions explicit_conversion_pairs
+      defined_conversions.each do |from, to|
+        it "should support conversion from #{from} to #{to}" do
+          assert @currency_converter.supports?(from, to), "does not support conversion from #{from} to #{to}"
+        end
+      end
     end
 
     describe "should support derived conversions" do
-      derived_conversion_pairs = [[:aud, :usd], [:usd, :aud], [:cad, :aud]]
+      derived_conversions = [[:aud, :usd], [:usd, :aud], [:cad, :aud]]
 
-      assert_supports_conversions derived_conversion_pairs
+      derived_conversions.each do |from, to|
+        it "should support conversion from #{from} to #{to}" do
+          assert @currency_converter.supports?(from, to), "does not support conversion from #{from} to #{to}"
+        end
+      end
     end
 
     describe "should not support an unkown conversion" do
