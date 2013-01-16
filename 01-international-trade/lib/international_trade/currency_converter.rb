@@ -1,14 +1,24 @@
 class CurrencyConverter
 
-  def initialize(data_file)
-    @conversions = load_conversions(data_file)
+  def initialize
+    @rates = RateHash.new
   end
 
   def load_conversion(data_file)
   end
-  
+
   def supports?(from, to)
-    return true
+    has_chain?(from, to) || has_chain?(to, from)
+  end
+
+  def rates=(rates)
+    @rates.rates = rates
+  end
+
+  private
+
+  def has_chain?(from, to)
+    !@rates[from, to].nil?
   end
 
 end

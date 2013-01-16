@@ -3,45 +3,48 @@ require 'minitest/autorun'
 
 require 'international_trade'
 
-# describe CurrencyConverter do
-#   before do
-#     @currency_converter = CurrencyConverter.new 
-#   end
 
-#   describe "#supports?" do
-#     describe "should support explicit conversions" do
-#       it "should support conversion from AUD to CAD" do
-#         assert @currency_converter.supports? :aud, :cad
-#       end
+def assert_supports_conversions(pairs)
+  pairs.each do |from, to|
+    it "should support conversion from #{from} to #{to}" do
+      assert @currency_converter.supports?(from, to), "does not support conversion from #{from} to #{to}"
+    end
+  end
+end        
 
-#       it "should support conversion from CAD to USD" do
-#         assert @currency_converter.supports? :cad, :usd
-#       end
+describe CurrencyConverter do
 
-#       it "should support conversion from USD to CAD" do
-#         assert @currency_converter.supports? :usd, :cad
-#       end
-#     end
+  before do
+    @currency_converter = CurrencyConverter.new
 
-#     describe "should support derived conversions" do
-#       it "should support conversion from AUD to USD" do
-#         assert @currency_converter.supports? :aud, :usd
-#       end
+    @currency_converter.rates = {
+      aud: {cad: 1.0079},
+      cad: {usd: 1.0090},
+      usd: {cad: 0.9911}
+    }     
+  end
 
-#       it "should support conversion from USD to AUD" do
-#         assert @currency_converter.supports? :usd, :aud
-#       end
+  describe "#supports?" do
+    before do
+    end
 
-#       it "should support conversion from CAD to AUD" do
-#         assert @currency_converter.supports? :cad, :aud
-#       end
-#     end
+    describe "should support explicit conversions" do
+      explicit_conversion_pairs = [[:aud, :cad], [:cad, :usd], [:usd, :cad]]
 
-#     describe "should not support an unkown conversion" do
-#       it "should not support conversion from JAP to USD" do
-#         refute @currency_converter.supports? :jpy, :usd
-#       end
-#     end    
-#   end
+      assert_supports_conversions explicit_conversion_pairs
+    end
 
-# end
+    describe "should support derived conversions" do
+      derived_conversion_pairs = [[:aud, :usd], [:usd, :aud], [:cad, :aud]]
+
+      assert_supports_conversions derived_conversion_pairs
+    end
+
+    describe "should not support an unkown conversion" do
+      it "should not support conversion from JAP to USD" do
+        refute @currency_converter.supports? :jpy, :usd
+      end
+    end
+  end
+
+end
