@@ -5,45 +5,59 @@ require 'international_trade'
 
 describe CurrencyConverter do
 
-  before do
-    @currency_converter = CurrencyConverter.new
+  describe "#load_conversions" do
+    before do
+      @rates = MiniTest::Mock.new
+      @currency_converter = CurrencyConverter.new(@rates)
+    end
 
-    @currency_converter.rates = {
-      aud: {cad: 1.0079},
-      cad: {usd: 1.0090},
-      usd: {cad: 0.9911}
-    }     
+    it "should load rate hash" do
+      data_file = "rates.xml"
+      @rates.expect :load, nil, [data_file]
+
+      @currency_converter.load_conversions(data_file)
+
+      @rates.verify
+    end
   end
 
-  describe "#supports?" do
+  describe "#get_rates_chain" do
     before do
+      @currency_converter = CurrencyConverter.new
+
+      @currency_converter.rates = {
+        aud: {cad: 1.0079},
+        cad: {usd: 1.0090},
+        usd: {cad: 0.9911}
+      }     
     end
 
-    describe "should support defined conversions" do
-      defined_conversions = [[:aud, :cad], [:cad, :usd], [:usd, :cad]]
+    it "should support defined chains" do
+      rate_chain = @currency_converter.get_rate_chain(:aud, :cad)
 
-      defined_conversions.each do |from, to|
-        it "should support conversion from #{from} to #{to}" do
-          assert @currency_converter.supports?(from, to), "does not support conversion from #{from} to #{to}"
-        end
-      end
+      refute rate_chain.nil?
+      assert_equal 1, rate_chain.size
+
+      rate = rate_chain.first
+
+      assert_equal :aud, rate.from
+      assert_equal :cad, rate.to
+      assert_in_delta 1.0079, rate.conversion, 0.00001
     end
 
-    describe "should support derived conversions" do
-      derived_conversions = [[:aud, :usd], [:usd, :aud], [:cad, :aud]]
+    it "should derive the reverse of a defined conversion" do
+      rate_chain = @currency_converter.get_rate_chain(:cad, :aud)
 
-      derived_conversions.each do |from, to|
-        it "should support conversion from #{from} to #{to}" do
-          assert @currency_converter.supports?(from, to), "does not support conversion from #{from} to #{to}"
-        end
-      end
+      refute rate_chain.nil?
+      assert_equal 1, rate_chain.size
+
+      rate = rate_chain.first
+
+      assert_equal :cad, rate.from
+      assert_equal :aud, rate.to
+      assert_in_delta 0.99216, rate.conversion, 0.00001
     end
 
-    describe "should not support an unkown conversion" do
-      it "should not support conversion from JAP to USD" do
-        refute @currency_converter.supports? :jpy, :usd
-      end
-    end
   end
 
 end

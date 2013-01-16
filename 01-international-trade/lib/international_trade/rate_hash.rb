@@ -18,7 +18,7 @@ class RateHash
 
   def add_conversion(from, to, conversion)
     rates[from] ||= {}
-    rates[from][to] = conversion
+    rates[from][to] = BigDecimal.new(conversion, 4)
   end
 
   def [](from, to)
@@ -33,7 +33,7 @@ class RateHash
     [
       rate.at_xpath('from').content.downcase.to_sym,
       rate.at_xpath('to').content.downcase.to_sym,
-      rate.at_xpath('conversion').content.to_f
+      BigDecimal.new(rate.at_xpath('conversion').content)
     ]
   end
 
