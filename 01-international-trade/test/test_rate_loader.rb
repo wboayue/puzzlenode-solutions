@@ -15,7 +15,7 @@ describe RateHash do
     end
 
     it "should load rates into hash" do
-      assert_that_rates_are_loaded
+      assert_rates_are_loaded
     end
   end
 
@@ -29,7 +29,7 @@ describe RateHash do
     end
 
     it "should populate rates" do
-      assert_that_rates_are_loaded
+      assert_rates_are_loaded
     end
   end
 
@@ -37,7 +37,7 @@ describe RateHash do
     File.join(File.dirname(__FILE__), 'data/sample_rates.xml')
   end
 
-  def assert_that_rates_are_loaded
+  def assert_rates_are_loaded
     refute @rates[:aud, :cad].nil?, 'no rates for aud -> cad'
     assert_in_delta @rates[:aud, :cad], 1.0079, 0.00001
 
