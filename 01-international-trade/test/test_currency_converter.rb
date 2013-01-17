@@ -32,29 +32,23 @@ describe CurrencyConverter do
       }     
     end
 
-    it "should support defined chains" do
-      rate_chain = @currency_converter.get_rate_chain(:aud, :cad)
-
-      refute rate_chain.nil?
-      assert_equal 1, rate_chain.size
-
-      rate = rate_chain.first
+    it "should compute simple conversions" do
+      skip "test this later"
+      
+      rate = @currency_converter.get_rate(:aud, :cad)
 
       assert_equal :aud, rate.from
       assert_equal :cad, rate.to
       assert_in_delta 1.0079, rate.conversion, 0.00001
     end
 
-    it "should derive the reverse of a defined conversion" do
-      rate_chain = @currency_converter.get_rate_chain(:cad, :aud)
+    it "should compute simple reverse conversions" do
+      skip "test this later"
 
-      refute rate_chain.nil?
-      assert_equal 1, rate_chain.size
+      rate = @currency_converter.get_rate(:cad, :aud)
 
-      rate = rate_chain.first
-
-      assert_equal :cad, rate.from
-      assert_equal :aud, rate.to
+      assert_equal :aud, rate.from
+      assert_equal :cad, rate.to
       assert_in_delta 0.99216, rate.conversion, 0.00001
     end
 

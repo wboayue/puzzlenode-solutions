@@ -1,4 +1,5 @@
 require 'nokogiri'
+require 'ostruct'
 
 class RateHash
 
@@ -24,6 +25,21 @@ class RateHash
   def [](from, to)
     if rates.has_key? from
       rates[from][to]
+    end
+  end
+
+  def get_chain(from, to)
+    conversions = rates[from]
+    if conversions.has_key?(to)
+      [ OpenStruct.new(from: from, to: to, conversion: conversions[to]) ] 
+    else
+      conversions.each_key do |key|
+        chain = get_chain(key, to)
+        unless chain.nil?
+          return [ OpenStruct.new(from: from, to: key, conversion: conversions[to]) ].concat(chain) 
+        end
+      end
+      nil
     end
   end
 

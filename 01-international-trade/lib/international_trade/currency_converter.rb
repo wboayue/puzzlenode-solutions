@@ -7,16 +7,8 @@ class CurrencyConverter
     @rates = rates
   end
 
-  def load_conversions(data_file)
-    @rates.load(data_file)
-  end
-
-  def supports?(from, to)
-    has_chain?(from, to) || has_chain?(to, from)
-  end
-
-  def rates=(rates)
-    @rates.rates = rates
+  def get_rate(from, to)
+     OpenStruct.new
   end
 
   def get_rate_chain(from, to)
@@ -29,6 +21,14 @@ class CurrencyConverter
     [].tap do |chain|
       chain << OpenStruct.new(from: from, to: to, conversion: conversion) unless conversion.nil?
     end
+  end
+
+  def load_conversions(data_file)
+    @rates.load(data_file)
+  end
+
+  def rates=(rates)
+    @rates.rates = rates
   end
 
   private
