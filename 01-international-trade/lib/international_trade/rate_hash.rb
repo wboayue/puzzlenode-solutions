@@ -30,20 +30,23 @@ class RateHash
 
   def get_chain(from, to)
     conversions = rates[from]
+
     if conversions.has_key?(to)
-      [ OpenStruct.new(from: from, to: to, conversion: conversions[to]) ] 
+      create_link(from, to)
     else
       conversions.each_key do |key|
         chain = get_chain(key, to)
-        unless chain.nil?
-          return [ OpenStruct.new(from: from, to: key, conversion: conversions[to]) ].concat(chain) 
-        end
+        return create_link(from, key).concat(chain) unless chain.nil?
       end
       nil
     end
   end
 
   private 
+
+  def create_link(from, to)
+    [ OpenStruct.new(from: from, to: to, conversion: rates[from][to]) ]
+  end
 
   def extract_conversion(rate)
     [
