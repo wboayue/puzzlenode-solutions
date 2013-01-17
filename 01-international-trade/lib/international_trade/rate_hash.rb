@@ -28,14 +28,18 @@ class RateHash
     end
   end
 
-  def get_chain(from, to)
+  def get_chain(from, to, visited = [])
+    return nil if visited.include?(from)
+
+    visited = [from].concat(visited)
+
     conversions = rates[from]
 
     if conversions.has_key?(to)
       create_link(from, to)
     else
       conversions.each_key do |key|
-        chain = get_chain(key, to)
+        chain = get_chain(key, to, visited)
         return create_link(from, key).concat(chain) unless chain.nil?
       end
       nil

@@ -8,18 +8,13 @@ class CurrencyConverter
   end
 
   def get_rate(from, to)
-     OpenStruct.new
-  end
-
-  def get_rate_chain(from, to)
-    conversion = @rates[from, to]
+    chain = rates.get_chain(from, to)
     
-    if conversion.nil?
-      conversion = BigDecimal.new("1.0") / @rates[to, from] if @rates[to, from] 
-    end
-
-    [].tap do |chain|
-      chain << OpenStruct.new(from: from, to: to, conversion: conversion) unless conversion.nil?
+    if chain.nil?
+      chain = rates.get_chain(to, from)
+      invert(reduce_chain(chain)) unless chain.nil?
+    else
+      reduce_chain(chain)
     end
   end
 
@@ -32,6 +27,18 @@ class CurrencyConverter
   end
 
   private
+
+  def reduce_chain(chain)
+    chain[0]
+  end
+
+  def invert(rate)
+    OpenStruct.new(from: rate.to, to: rate.from, conversion: BigDecimal.new("1.0") / rate.conversion)
+  end
+
+  def rates
+    @rates
+  end
 
   def has_chain?(from, to)
     !@rates[from, to].nil?

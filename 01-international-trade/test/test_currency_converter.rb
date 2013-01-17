@@ -21,7 +21,7 @@ describe CurrencyConverter do
     end
   end
 
-  describe "#get_rates_chain" do
+  describe "#get_rate" do
     before do
       @currency_converter = CurrencyConverter.new
 
@@ -33,8 +33,6 @@ describe CurrencyConverter do
     end
 
     it "should compute simple conversions" do
-      skip "test this later"
-      
       rate = @currency_converter.get_rate(:aud, :cad)
 
       assert_equal :aud, rate.from
@@ -43,12 +41,10 @@ describe CurrencyConverter do
     end
 
     it "should compute simple reverse conversions" do
-      skip "test this later"
-
       rate = @currency_converter.get_rate(:cad, :aud)
 
-      assert_equal :aud, rate.from
-      assert_equal :cad, rate.to
+      assert_equal :cad, rate.from
+      assert_equal :aud, rate.to
       assert_in_delta 0.99216, rate.conversion, 0.00001
     end
 

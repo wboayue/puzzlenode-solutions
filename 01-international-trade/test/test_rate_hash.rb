@@ -58,6 +58,14 @@ describe RateHash do
       assert_equal intermediate, chain[1].from
       assert_equal to, chain[1].to
     end    
+
+    it "should return nil if chain not found" do
+      from, to = :aud, :jpy
+      chain = @rates.get_chain(from, to)
+
+      assert_nil chain, "should not find chain"
+    end    
+
   end
 
   def sample_rates
