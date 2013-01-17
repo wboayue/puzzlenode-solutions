@@ -29,7 +29,9 @@ class CurrencyConverter
   private
 
   def reduce_chain(chain)
-    chain[0]
+    chain.reduce do |result, link|
+      OpenStruct.new(from: result.from, to: link.to, conversion: result.conversion * link.conversion)
+    end
   end
 
   def invert(rate)

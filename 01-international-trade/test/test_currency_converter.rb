@@ -40,6 +40,14 @@ describe CurrencyConverter do
       assert_in_delta 1.0079, rate.conversion, 0.00001
     end
 
+    it "should compute chained conversions" do
+      rate = @currency_converter.get_rate(:aud, :usd)
+
+      assert_equal :aud, rate.from
+      assert_equal :usd, rate.to
+      assert_in_delta 1.01697, rate.conversion, 0.00001
+    end
+
     it "should compute simple reverse conversions" do
       rate = @currency_converter.get_rate(:cad, :aud)
 
