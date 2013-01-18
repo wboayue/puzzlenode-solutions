@@ -18,8 +18,9 @@ describe TransactionIterator do
       @iterator = TransactionIterator.new(sample_tranactions_data_file)
     end
 
-    it "iterator over transactions" do
+    it "iterate over all transactions" do
       results = []
+      
       @iterator.each_transaction do |store, item, price|
         results.push([store, item, price])
       end
@@ -30,6 +31,19 @@ describe TransactionIterator do
       assert_transaction_equal ['Nashua', 'DM1182', Price.new('58.58', 'AUD')], results[2]
       assert_transaction_equal ['Camden', 'DM1182', Price.new('54.64', 'USD')], results[4]
     end
+
+    it "filter transaction by sku" do
+      results = []
+
+      @iterator.each_transaction(sku: 'DM1210') do |store, item, price|
+        results.push([store, item, price])
+      end
+
+      assert_equal 2, results.size
+
+      assert_transaction_equal ['Yonkers', 'DM1210', Price.new('70.00', 'USD')], results[0]
+      assert_transaction_equal ['Scranton', 'DM1210', Price.new('68.76', 'USD')], results[1]
+    end    
   end
 
   def assert_transaction_equal(expected, actual)
