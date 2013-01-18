@@ -1,7 +1,7 @@
 require 'minitest/spec'
 require 'minitest/autorun'
 
-require 'international_trade'
+require 'international_trade/currency_converter'
 
 describe CurrencyConverter do
 
