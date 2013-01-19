@@ -18,12 +18,42 @@ class CurrencyConverter
     end
   end
 
+  def self.load_conversions(data_file)
+    instance.load_conversions(data_file)
+  end
+
   def load_conversions(data_file)
     @rates.load(data_file)
   end
 
+  def self.rate_hash=(rates)
+    instance.rate_hash=(rates)
+  end
+
+  def rate_hash=(rates)
+    @rates = rates
+  end
+
+  def self.rates=(rates)
+    instance.rates=(rates)
+  end
+
   def rates=(rates)
     @rates.rates = rates
+  end
+
+  def self.convert(amount, from, to)
+    instance.convert(amount, from, to)
+  end
+
+  def convert(amount, from, to)
+    rate = get_rate(from, to)
+    raise "Unsupported conversion" if rate.nil?
+    (amount * rate.conversion).round(2)
+  end
+
+  def self.instance
+    @@instance ||= CurrencyConverter.new
   end
 
   private

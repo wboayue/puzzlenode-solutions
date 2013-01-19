@@ -1,5 +1,6 @@
 require 'international_trade/price'
 require 'csv'
+require 'ostruct'
 
 class TransactionIterator
 
@@ -14,7 +15,7 @@ class TransactionIterator
     CSV.foreach(data_file, headers: true) do |row|
       sku = row['sku']
       if skus.empty? || skus.include?(sku) 
-        yield row['store'], sku, Price.new(*row['amount'].split(' '))
+        yield OpenStruct.new store: row['store'], sku: sku, price: Price.new(*row['amount'].split(' '))
       end
     end
   end

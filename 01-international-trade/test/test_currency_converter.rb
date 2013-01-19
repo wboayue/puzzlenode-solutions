@@ -5,17 +5,23 @@ require 'international_trade/currency_converter'
 
 describe CurrencyConverter do
 
+  describe "#instance" do
+    it "should return same instance on multiple calls" do
+      assert_equal CurrencyConverter.instance.object_id, CurrencyConverter.instance.object_id 
+    end
+  end
+
   describe "#load_conversions" do
     before do
       @rates = MiniTest::Mock.new
-      @currency_converter = CurrencyConverter.new(@rates)
+      CurrencyConverter.rate_hash = @rates
     end
 
     it "should load rate hash" do
       data_file = "rates.xml"
       @rates.expect :load, nil, [data_file]
 
-      @currency_converter.load_conversions(data_file)
+      CurrencyConverter.load_conversions(data_file)
 
       @rates.verify
     end
@@ -23,7 +29,7 @@ describe CurrencyConverter do
 
   describe "#get_rate" do
     before do
-      @currency_converter = CurrencyConverter.new
+      @currency_converter = CurrencyConverter.instance
 
       @currency_converter.rates = {
         aud: {cad: 1.0079},
@@ -56,6 +62,20 @@ describe CurrencyConverter do
       assert_in_delta 0.99216, rate.conversion, 0.00001
     end
 
+  end
+
+  describe "#convert" do
+    before do
+      CurrencyConverter.rates = {
+        aud: {cad: 1.0079},
+        cad: {usd: 1.0090},
+        usd: {cad: 0.9911}
+      }     
+    end
+
+    it "should convert amount given a source and destination currency" do
+      assert_equal BigDecimal.new("1.02"), CurrencyConverter.convert(BigDecimal.new("1.00"), :aud, :usd)
+    end
   end
 
 end

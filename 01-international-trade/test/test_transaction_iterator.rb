@@ -1,6 +1,7 @@
 require 'minitest/spec'
 require 'minitest/autorun'
 
+require 'ostruct'
 require 'international_trade/transaction_iterator'
 
 describe TransactionIterator do
@@ -21,8 +22,8 @@ describe TransactionIterator do
     it "iterate over all transactions" do
       results = []
       
-      @iterator.each_transaction do |store, item, price|
-        results.push([store, item, price])
+      @iterator.each_transaction do |transaction|
+        results.push([transaction.store, transaction.sku, transaction.price])
       end
 
       assert_equal 5, results.size
@@ -35,8 +36,8 @@ describe TransactionIterator do
     it "filter transaction by sku" do
       results = []
 
-      @iterator.each_transaction(sku: 'DM1210') do |store, item, price|
-        results.push([store, item, price])
+      @iterator.each_transaction(sku: 'DM1210') do |transaction|
+        results.push([transaction.store, transaction.sku, transaction.price])
       end
 
       assert_equal 2, results.size
