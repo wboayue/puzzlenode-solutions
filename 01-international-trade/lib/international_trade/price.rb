@@ -13,10 +13,11 @@ class Price
 
   def +(other)
     if currency == other.currency
-      Price.new(amount + other.amount, currency)
+      sum = amount + other.amount
     else
-      Price.new(amount + CurrencyConverter.convert(other.amount, other.currency, currency), currency)
+      sum = amount + CurrencyConverter.convert(other.amount, other.currency, currency)
     end
+    Price.new(sum, currency)
   end
 
   def to_s
