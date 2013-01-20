@@ -1,0 +1,30 @@
+#!/bin/ruby
+
+require 'trollop'
+require 'international_trade'
+
+parser = Trollop::Parser.new do
+  opt :rates, "path to conversion rates", required: true, type: :string
+  opt :transactions, "path to transactions to process", required: true, type: :string
+  opt :sku, "sku to sum", required: true, type: :string
+  opt :currency, "currency to display results", default: 'usd'
+end
+
+options = Trollop::with_standard_exception_handling parser do
+  raise Trollop::HelpNeeded if ARGV.empty?
+  parser.parse ARGV
+end
+
+unless File.exists? options[:rates]
+  puts "Rates file #{options[:rates]} does not exist."
+  exit(1)
+end
+
+unless File.exists? options[:transactions]
+  puts "Transactions file #{options[:transactions]} does not exist."
+  exit(1)
+end
+
+puzzle = InternationalTrade.new(rates: options[:rates], transactions: options[:transactions])
+
+puts puzzle.compute_grand_total(options[:sku], options[:currency].to_sym)
