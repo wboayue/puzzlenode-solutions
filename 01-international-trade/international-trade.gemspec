@@ -2,7 +2,7 @@ Gem::Specification.new do |s|
   s.name    = 'international_trade'
   s.version = '0.0.1'
   s.executables = ['international_trade'] 
-  s.date = '2013-01-15'
+  s.date = '2013-01-20'
   s.summary     = 'International Trade'
   s.description = 'Solution to puzzle #1 - International trade'
 
