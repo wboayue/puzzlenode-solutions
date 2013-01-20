@@ -40,8 +40,4 @@ class CurrencyConverter
     @rates
   end
 
-  # def has_chain?(from, to)
-  #   !@rates[from, to].nil?
-  # end
-
 end
