@@ -1,5 +1,6 @@
 Puzzle Node Solutions
 =====================
+[![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/wboayue/puzzlenode-solutions)
 
 Ruby solutions to [puzzlenode.com](http://puzzlenode.com) puzzles.
 
