@@ -49,7 +49,11 @@ class CurrencyConverter
   def convert(amount, from, to)
     rate = get_rate(from, to)
     raise "Unsupported conversion" if rate.nil?
-    (amount * rate.conversion).round(2)
+    CurrencyConverter.round(amount * rate.conversion)
+  end
+
+  def self.round(amount)
+    amount.round(2, :banker)
   end
 
   def self.instance

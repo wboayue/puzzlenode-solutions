@@ -32,9 +32,9 @@ describe CurrencyConverter do
       @currency_converter = CurrencyConverter.instance
 
       @currency_converter.rates = {
-        aud: {cad: 1.0079},
-        cad: {usd: 1.0090},
-        usd: {cad: 0.9911}
+        aud: {cad: BigDecimal.new("1.0079")},
+        cad: {usd: BigDecimal.new("1.0090")},
+        usd: {cad: BigDecimal.new("0.9911")}
       }     
     end
 
@@ -67,14 +67,24 @@ describe CurrencyConverter do
   describe "#convert" do
     before do
       CurrencyConverter.rates = {
-        aud: {cad: 1.0079},
-        cad: {usd: 1.0090},
-        usd: {cad: 0.9911}
+        aud: {cad: BigDecimal.new("1.0079")},
+        cad: {usd: BigDecimal.new("1.0090")},
+        usd: {cad: BigDecimal.new("0.9911")}
       }     
     end
 
     it "should convert amount given a source and destination currency" do
       assert_equal BigDecimal.new("1.02"), CurrencyConverter.convert(BigDecimal.new("1.00"), :aud, :usd)
+    end
+  end
+
+  describe "#round" do
+    it "should perform bankers rounding" do
+      assert_equal BigDecimal.new("0.24"), CurrencyConverter.round(BigDecimal.new("0.235")), "0.235 -> 0.24"
+      assert_equal BigDecimal.new("0.24"), CurrencyConverter.round(BigDecimal.new("0.245")), "0.245 -> 0.24"
+
+      assert_equal BigDecimal.new("-0.24"), CurrencyConverter.round(BigDecimal.new("-0.235")), "-0.235 -> -0.24"
+      assert_equal BigDecimal.new("-0.24"), CurrencyConverter.round(BigDecimal.new("-0.245")), "-0.245 -> -0.24"
     end
   end
 

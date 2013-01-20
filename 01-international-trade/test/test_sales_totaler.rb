@@ -38,9 +38,9 @@ describe SalesTotaler do
 
       CurrencyConverter.rate_hash = RateHash.new
       CurrencyConverter.rates = {
-        aud: {cad: 1.0079},
-        cad: {usd: 1.0090},
-        usd: {cad: 0.9911}
+        aud: {cad: BigDecimal.new("1.0079")},
+        cad: {usd: BigDecimal.new("1.0090")},
+        usd: {cad: BigDecimal.new("0.9911")}
       }     
 
       @totaler = SalesTotaler.new(transactions: @transactions)
