@@ -50,7 +50,8 @@ describe TransactionIterator do
   def assert_transaction_equal(expected, actual)
     assert_equal expected[0], actual[0], 'expected matching store'
     assert_equal expected[1], actual[1], 'expected matching item'
-    assert_equal expected[2], actual[2], 'expected matching price'
+    assert_in_delta expected[2].amount, actual[2].amount, 0.001, 'expected matching price amount'
+    assert_equal expected[2].currency, actual[2].currency, 'expected matching price currency'
   end
 
   def sample_tranactions_data_file

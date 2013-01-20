@@ -2,15 +2,19 @@ require 'minitest/spec'
 require 'minitest/autorun'
 require 'minitest/mock'
 
+require_relative 'test_helper'
+
 require 'international_trade/sales_totaler'
 
 describe SalesTotaler do
 
+  include TestHelper
+
   describe "#initialize" do
-    it "should configured rates file" do
-      rates_file = 'rates.xml'
-      totaler = SalesTotaler.new(rates_file: rates_file)
-      assert_equal rates_file, totaler.rates_file
+    it "should configure converter" do
+      converter = Object.new
+      totaler = SalesTotaler.new(converter: converter)
+      assert_equal converter, totaler.converter
     end
 
     it "should configure transactions file" do
@@ -35,21 +39,15 @@ describe SalesTotaler do
       end
 
       @transactions = TransactionIteratorDouble.new
+      @converter = CurrencyConverter.new sample_rates
 
-      CurrencyConverter.rate_hash = RateHash.new
-      CurrencyConverter.rates = {
-        aud: {cad: BigDecimal.new("1.0079")},
-        cad: {usd: BigDecimal.new("1.0090")},
-        usd: {cad: BigDecimal.new("0.9911")}
-      }     
-
-      @totaler = SalesTotaler.new(transactions: @transactions)
+      @totaler = SalesTotaler.new(transactions: @transactions, converter: @converter)
     end
 
     it "should compute transaction totals given sku" do
       grand_total = @totaler.compute_grand_total('DM1182', :usd)
 
-      assert_equal Price.new('134.22', :usd), grand_total
+      assert_equal BigDecimal.new('134.22'), grand_total
     end
   end
 

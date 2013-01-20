@@ -1,20 +1,25 @@
 class SalesTotaler
 
-  attr_accessor :rates_file, :transactions
+  attr_accessor :converter, :transactions
 
   def initialize(args = {})
-    @rates_file = args[:rates_file]
+    @converter = args[:converter]
     @transactions = args[:transactions]
   end
 
   def compute_grand_total(sku, currency)
-    grand_total = Price.new("0", currency)
+    grand_total = BigDecimal.new("0.0")
 
     @transactions.each_transaction(sku: sku) do |transaction|
-      grand_total += transaction.price
+      price = transaction.price
+      if price.currency == currency
+        grand_total += price.amount
+      else
+        grand_total += @converter.convert(price.amount, price.currency, currency)
+      end
     end
 
-    grand_total
+    grand_total.to_s('F')
   end
 
 end

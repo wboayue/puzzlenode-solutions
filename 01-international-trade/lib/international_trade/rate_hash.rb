@@ -5,11 +5,17 @@ class RateHash
 
   attr_writer :rates
 
-  def initialize
-    @rates = {}
+  def initialize(rates = {})
+    if rates.instance_of?(String)
+      load(rates)
+    else
+      @rates = rates
+    end
   end
 
   def load(data_file)
+    @rates = {}
+    
     doc = Nokogiri::XML(File.new(data_file))
     doc.xpath('//rate').each do |rate|
       from, to, conversion = extract_conversion(rate)
