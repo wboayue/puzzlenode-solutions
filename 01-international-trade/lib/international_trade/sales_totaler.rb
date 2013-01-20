@@ -19,7 +19,7 @@ class SalesTotaler
       end
     end
 
-    grand_total.to_s('F')
+    grand_total
   end
 
 end

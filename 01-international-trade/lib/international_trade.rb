@@ -16,7 +16,9 @@ class InternationalTrade
     converter = CurrencyConverter.new(rates)
     trans = TransactionIterator.new(transactions)
     sales_totaler = SalesTotaler.new transactions: trans, converter: converter
-    sales_totaler.compute_grand_total sku.upcase, currency
+    
+    total = sales_totaler.compute_grand_total sku.upcase, currency
+    total.to_s('F')
   end
 
 end
