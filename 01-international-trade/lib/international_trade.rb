@@ -5,19 +5,17 @@ require 'international_trade/sales_totaler'
 
 class InternationalTrade
   
-  attr_accessor :rates, :transactions
+  attr_accessor :converter, :transactions
 
   def initialize(arguments)
-    @rates = arguments[:rates]
-    @transactions = arguments[:transactions]
+    @converter = CurrencyConverter.new(arguments[:rates])
+    @transactions = TransactionIterator.new(arguments[:transactions])
+
+    @sales_totaler = SalesTotaler.new transactions: @transactions, converter: @converter
   end
 
-  def compute_grand_total(sku, currency)
-    converter = CurrencyConverter.new(rates)
-    trans = TransactionIterator.new(transactions)
-    sales_totaler = SalesTotaler.new transactions: trans, converter: converter
-    
-    total = sales_totaler.compute_grand_total sku.upcase, currency
+  def compute_grand_total(sku, currency)    
+    total = @sales_totaler.compute_grand_total sku.upcase, currency
     total.to_s('F')
   end
 
