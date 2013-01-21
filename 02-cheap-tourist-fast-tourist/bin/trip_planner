@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+
+require 'trollop'
+require 'trip_planner'
+
+parser = Trollop::Parser.new do
+  opt :flights, "path to flight data", required: true, type: :string
+end
+
+options = Trollop::with_standard_exception_handling parser do
+  raise Trollop::HelpNeeded if ARGV.empty?
+  parser.parse ARGV
+end
+
+unless File.exists? options[:flights]
+  puts "Flight data #{options[:flights]} does not exist."
+  exit(1)
+end
+
+planner = TripPlanner.new(flights: options[:flights])
+
+puts planner.cheapest_trip(:a, :z)
+puts planner.fastest_trip(:a, :z)
