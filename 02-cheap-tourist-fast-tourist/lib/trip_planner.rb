@@ -11,16 +11,3 @@ class TripPlanner
     puts "short trip"
   end
 end
-
-
-# vertex
-# edges
-
-# edge
-# cost
-
-# node
-# paths
-
-# path
-# from, to, cost
