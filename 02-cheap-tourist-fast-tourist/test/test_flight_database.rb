@@ -35,25 +35,33 @@ describe FlightDatabase do
 
     it "should create paths for edges" do
       a_paths = @flight_database.get_node(:a).paths
-      z_paths = @flight_database.get_node(:z).paths
+      b_paths = @flight_database.get_node(:b).paths
 
-      refute a_paths[:b].nil?, 'should have path from a -> b'
       assert_path_equal({:from => :a, :to => :b, :cost => 100.00, :duration => 60}, a_paths[:b])
 
-      refute a_paths[:z].nil?, 'should have path from a -> z'
-      assert_path_equal({:from => :a, to: :z, cost: 300.00, duration: 120}, a_paths[:z])
+      assert_path_equal({:from => :b, to: :z, cost: 100.00, duration: 120}, b_paths[:z])
 
-      refute z_paths[:a].nil?, 'should have path from z -> a'
-      assert_path_equal({:from => :z, to: :a, cost: 300.00, duration: 120}, z_paths[:a])
-      
-      refute z_paths[:b].nil?, 'should have path from z -> b'
-      assert_path_equal({:from => :z, to: :b, cost: 100.00, duration: 120}, z_paths[:b])
+      assert_path_equal({:from => :a, to: :z, cost: 300.00, duration: 120}, a_paths[:z])
     end
 
   end
-  
+
+  describe "#find_cheapest" do
+    before do
+      @flight_database = FlightDatabase.new
+      @flight_database.load(sample_flights)
+    end
+
+    it "finds the cheapest flight from :a -> :z" do
+      assert_equal 200.0, @flight_database.find_cheapest, 'finds cheapest path from :a -> :z'
+    end
+  end
+
   def assert_path_equal(expected, actual)
     name = "#{expected[:from]} -> #{expected[:to]}"
+
+    refute actual.nil?, "#{name}: path expected"
+
     assert_equal expected[:from], actual.from, "#{name}: expected path from #{expected[:from]}"
     assert_equal expected[:to], actual.to, "#{name}: expected path to #{expected[:to]}"
     assert_equal expected[:cost], actual.cost, "#{name}: expected cost of #{expected[:cost]}"

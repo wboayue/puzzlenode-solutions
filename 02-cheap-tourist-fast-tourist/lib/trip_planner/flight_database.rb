@@ -22,6 +22,39 @@ class FlightDatabase
     end
   end
 
+  def get_node(name)
+    @nodes[name]
+  end
+
+  def find_cheapest
+    cheapest = nil
+
+    nodes[:a].paths.each do |to, path|
+      path_cost = cost(path)
+
+      if cheapest.nil? || path_cost < cheapest
+        cheapest = path_cost
+      end
+    end
+
+    cheapest
+  end
+
+  def cost(path)
+    total = path.cost 
+    unless path.to == :z
+      cheapest = nil
+      nodes[path.to].paths.each do |to, path|
+        path_cost = cost(path)
+        cheapest = path_cost if cheapest.nil? || path_cost < cheapest
+      end
+      total += cheapest
+    end
+    total
+  end
+
+  private
+
   def to_time(value)
     hour, min = value.split(':')
     time_a = base_time.dup
@@ -35,10 +68,6 @@ class FlightDatabase
 
   def base_time
     @base_time ||= Time.new.to_a[0..5].reverse
-  end
-
-  def get_node(name)
-    @nodes[name]
   end
 
 end

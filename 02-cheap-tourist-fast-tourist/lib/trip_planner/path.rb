@@ -10,4 +10,8 @@ class Path
     (@arrive - @depart) / 60
   end
 
+  def to_s
+    "Path[from=#{from},to=#{to},duration=#{duration_minutes}]"
+  end
+
 end
