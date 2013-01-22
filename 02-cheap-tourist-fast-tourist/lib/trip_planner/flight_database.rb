@@ -26,31 +26,72 @@ class FlightDatabase
     @nodes[name]
   end
 
-  def find_cheapest
-    cheapest = nil
+  def find_cheapest_route
+    best_cost, best_route = nil, nil
 
     nodes[:a].paths.each do |to, path|
-      path_cost = cost(path)
+      route_cost, route = cost(path)
 
-      if cheapest.nil? || path_cost < cheapest
-        cheapest = path_cost
+      if best_cost.nil? || route_cost < best_cost
+        best_cost, best_route = route_cost, route
       end
     end
 
-    cheapest
+    [best_cost, best_route]
   end
 
   def cost(path)
-    total = path.cost 
+    total, route = path.cost, [path]
+
     unless path.to == :z
-      cheapest = nil
+      cheapest, cheap_route = nil, nil
       nodes[path.to].paths.each do |to, path|
-        path_cost = cost(path)
-        cheapest = path_cost if cheapest.nil? || path_cost < cheapest
+        path_cost, a_route = cost(path)
+
+        if cheapest.nil? || path_cost < cheapest
+          cheapest = path_cost
+          cheap_route = a_route
+        end 
       end
       total += cheapest
+      route.concat(cheap_route)
     end
-    total
+
+    [total, route]
+  end
+
+  def find_fastest_route
+    best_cost, best_route = nil, nil
+
+    nodes[:a].paths.each do |to, path|
+      route_cost, route = fastest(path)
+
+      if best_cost.nil? || route_cost < best_cost
+        best_cost, best_route = route_cost, route
+      end
+    end
+
+    [best_cost, best_route]
+  end
+
+  def fastest(path)
+    total, route = path.duration_minutes, [path]
+
+    unless path.to == :z
+      cheapest, cheap_route = nil, nil
+      nodes[path.to].paths.each do |to, path|
+        path_cost, a_route = fastest(path)
+
+        if cheapest.nil? || path_cost < cheapest
+          cheapest = path_cost
+          cheap_route = a_route
+        end 
+      end
+      total += cheapest
+      route.concat(cheap_route)
+    end
+
+    [total, route]
   end
 
   private

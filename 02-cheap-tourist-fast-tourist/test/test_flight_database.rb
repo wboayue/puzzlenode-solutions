@@ -52,8 +52,30 @@ describe FlightDatabase do
       @flight_database.load(sample_flights)
     end
 
-    it "finds the cheapest flight from :a -> :z" do
-      assert_equal 200.0, @flight_database.find_cheapest, 'finds cheapest path from :a -> :z'
+    it "finds the cheapest route from :a -> :z" do
+      cost, route = @flight_database.find_cheapest_route
+
+      assert_equal 2, route.size, 'route should have 2 segments'
+      assert_equal 200.0, cost, 'route should cost 200'
+
+      assert_path_equal({:from => :a, :to => :b, :cost => 100.00}, route[0])
+      assert_path_equal({:from => :b, :to => :z, :cost => 100.00}, route[1])
+    end
+  end
+
+  describe "#find_fastest" do
+    before do
+      @flight_database = FlightDatabase.new
+      @flight_database.load(sample_flights)
+    end
+
+    it "finds the fastest route from :a -> :z" do
+      cost, route = @flight_database.find_fastest_route
+
+      assert_equal 1, route.size, 'route should have 1 segment'
+      assert_equal 120, cost, 'route should be 120 minutes long'
+
+      assert_path_equal({:from => :a, :to => :z, :duration => 120}, route[0])
     end
   end
 
@@ -64,8 +86,8 @@ describe FlightDatabase do
 
     assert_equal expected[:from], actual.from, "#{name}: expected path from #{expected[:from]}"
     assert_equal expected[:to], actual.to, "#{name}: expected path to #{expected[:to]}"
-    assert_equal expected[:cost], actual.cost, "#{name}: expected cost of #{expected[:cost]}"
-    assert_equal expected[:duration], actual.duration_minutes, "#{name}: expected duration of #{expected[:duration]}"
+    assert_equal expected[:cost], actual.cost, "#{name}: expected cost of #{expected[:cost]}" if expected.has_key? :cost
+    assert_equal expected[:duration], actual.duration_minutes, "#{name}: expected duration of #{expected[:duration]}" if expected.has_key? :duration
   end
 
 end

@@ -10,7 +10,6 @@ class Node
 
   def create_edge(destination, depart, arrive, cost)
     paths[destination.name] = Path.new(name, destination.name, depart, arrive, cost)
-    # destination.paths[name] = Path.new(destination.name, name, depart, arrive, cost)
   end
 
 end
