@@ -1,22 +1,15 @@
-require 'minitest/spec'
-require 'minitest/autorun'
+require_relative 'test_helper'
 
 require 'trip_planner/flight_graph'
 
 describe FlightGraph do
 
-  def sample_flights
-    [
-      "A B 09:00 10:00 100.00",
-      "B Z 11:30 13:30 100.00",
-      "A Z 10:00 12:00 300.00"
-    ]
-  end
+  include TestHelper
 
   describe "#load" do
     before do
       @flight_graph = FlightGraph.new
-      @flight_graph.load(sample_flights)
+      @flight_graph.load(sample_flight_graph_one)
     end
 
     it "should create nodes for vertexes" do
@@ -49,7 +42,7 @@ describe FlightGraph do
   describe "#find_cheapest" do
     before do
       @flight_graph = FlightGraph.new
-      @flight_graph.load(sample_flights)
+      @flight_graph.load(sample_flight_graph_one)
     end
 
     it "finds the cheapest route from :a -> :z" do
@@ -66,7 +59,7 @@ describe FlightGraph do
   describe "#find_fastest" do
     before do
       @flight_graph = FlightGraph.new
-      @flight_graph.load(sample_flights)
+      @flight_graph.load(sample_flight_graph_one)
     end
 
     it "finds the fastest route from :a -> :z" do
