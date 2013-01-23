@@ -2,7 +2,7 @@ require 'trip_planner/node'
 
 require 'bigdecimal'
 
-class FlightDatabase
+class FlightGraph
   
   attr_reader :nodes
 

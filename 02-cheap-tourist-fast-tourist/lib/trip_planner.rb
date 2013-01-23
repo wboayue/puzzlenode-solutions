@@ -1,13 +1,24 @@
 class TripPlanner
+
   def initialize(arguments)
-    FlightDatabase.new 
   end
 
-  def cheapest_trip(from, to)
-    puts "cheap trip"
+  def print_best_routes
+    each_database do |database|
+      cost, cheapest_route = database.find_cheapest_route
+      duration, fastest_route = database.find_fastest_route
+
+      puts format_route(cheapest_route)
+      puts format_route(fastest_route)
+      puts
+    end
   end
 
-  def fastest_trip(from, to)
-    puts "short trip"
+  def each_database
+    database = FlightDatabase.new(flights)
   end
+
+  def format_route(route)
+  end
+
 end

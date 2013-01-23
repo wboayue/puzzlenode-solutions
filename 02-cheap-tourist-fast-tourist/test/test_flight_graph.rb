@@ -1,9 +1,9 @@
 require 'minitest/spec'
 require 'minitest/autorun'
 
-require 'trip_planner/flight_database'
+require 'trip_planner/flight_graph'
 
-describe FlightDatabase do
+describe FlightGraph do
 
   def sample_flights
     [
@@ -15,27 +15,27 @@ describe FlightDatabase do
 
   describe "#load" do
     before do
-      @flight_database = FlightDatabase.new
-      @flight_database.load(sample_flights)
+      @flight_graph = FlightGraph.new
+      @flight_graph.load(sample_flights)
     end
 
     it "should create nodes for vertexes" do
-      refute @flight_database.get_node(:a).nil?, 'should find node :a'
-      assert_equal :a, @flight_database.get_node(:a).name, 'should have name :a'
+      refute @flight_graph.get_node(:a).nil?, 'should find node :a'
+      assert_equal :a, @flight_graph.get_node(:a).name, 'should have name :a'
 
-      refute @flight_database.get_node(:b).nil?, 'should find node :b' 
-      assert_equal :b, @flight_database.get_node(:b).name, 'should have name :b'
+      refute @flight_graph.get_node(:b).nil?, 'should find node :b' 
+      assert_equal :b, @flight_graph.get_node(:b).name, 'should have name :b'
 
-      refute @flight_database.get_node(:z).nil?, 'should find node :z' 
-      assert_equal :z, @flight_database.get_node(:z).name, 'should have name :z'
+      refute @flight_graph.get_node(:z).nil?, 'should find node :z' 
+      assert_equal :z, @flight_graph.get_node(:z).name, 'should have name :z'
 
-      assert @flight_database.get_node(:q).nil?, 'should not find node :q'
-      assert_equal 3, @flight_database.nodes.size 
+      assert @flight_graph.get_node(:q).nil?, 'should not find node :q'
+      assert_equal 3, @flight_graph.nodes.size 
     end
 
     it "should create paths for edges" do
-      a_paths = @flight_database.get_node(:a).paths
-      b_paths = @flight_database.get_node(:b).paths
+      a_paths = @flight_graph.get_node(:a).paths
+      b_paths = @flight_graph.get_node(:b).paths
 
       assert_path_equal({:from => :a, :to => :b, :cost => 100.00, :duration => 60}, a_paths[:b])
 
@@ -48,12 +48,12 @@ describe FlightDatabase do
 
   describe "#find_cheapest" do
     before do
-      @flight_database = FlightDatabase.new
-      @flight_database.load(sample_flights)
+      @flight_graph = FlightGraph.new
+      @flight_graph.load(sample_flights)
     end
 
     it "finds the cheapest route from :a -> :z" do
-      cost, route = @flight_database.find_cheapest_route
+      cost, route = @flight_graph.find_cheapest_route
 
       assert_equal 2, route.size, 'route should have 2 segments'
       assert_equal 200.0, cost, 'route should cost 200'
@@ -65,12 +65,12 @@ describe FlightDatabase do
 
   describe "#find_fastest" do
     before do
-      @flight_database = FlightDatabase.new
-      @flight_database.load(sample_flights)
+      @flight_graph = FlightGraph.new
+      @flight_graph.load(sample_flights)
     end
 
     it "finds the fastest route from :a -> :z" do
-      cost, route = @flight_database.find_fastest_route
+      cost, route = @flight_graph.find_fastest_route
 
       assert_equal 1, route.size, 'route should have 1 segment'
       assert_equal 120, cost, 'route should be 120 minutes long'
