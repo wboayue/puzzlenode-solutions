@@ -59,16 +59,17 @@ describe FlightGraph do
   describe "#find_fastest" do
     before do
       @flight_graph = FlightGraph.new
-      @flight_graph.load(sample_flight_graph_one)
+      @flight_graph.load(sample_flight_graph_two)
     end
 
     it "finds the fastest route from :a -> :z" do
       cost, route = @flight_graph.find_fastest_route
 
-      assert_equal 1, route.size, 'route should have 1 segment'
-      assert_equal 120, cost, 'route should be 120 minutes long'
+      assert_equal 2, route.size, 'route should have 1 segment'
+      assert_equal 150, cost, 'route should be 120 minutes long'
 
-      assert_path_equal({:from => :a, :to => :z, :duration => 120}, route[0])
+      assert_path_equal({:from => :a, :to => :b, :duration => 60}, route[0])
+      assert_path_equal({:from => :b, :to => :z, :duration => 90}, route[1])
     end
   end
 

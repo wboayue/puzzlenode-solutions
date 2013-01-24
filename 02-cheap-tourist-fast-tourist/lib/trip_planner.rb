@@ -1,3 +1,7 @@
+require 'ostruct'
+
+require 'trip_planner/flight_graph'
+
 class TripPlanner
 
   attr_reader :flights
@@ -6,18 +10,21 @@ class TripPlanner
     @flights = arguments[:flights]
   end
 
-  def print_best_routes
-    each_database do |database|
-      cost, cheapest_route = database.find_cheapest_route
-      duration, fastest_route = database.find_fastest_route
+  def find_best_routes
+    results = []
 
-      puts format_route(cheapest_route)
-      puts format_route(fastest_route)
-      puts
+    each_graph do |graph|
+      cheapest_route = graph.find_cheapest_route
+      fastest_route = graph.find_fastest_route
+
+      results.push OpenStruct.new(cheapest: cheapest_route, fastest: fastest_route)
     end
+
+    results
   end
 
-  def create_graph
+  def create_graph(edges)
+    FlightGraph.new(edges)
   end
 
   def each_graph
@@ -36,9 +43,6 @@ class TripPlanner
 
       yield create_graph(edges)
     end
-  end
-
-  def format_route(route)
   end
 
 end

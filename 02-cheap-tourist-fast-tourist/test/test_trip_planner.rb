@@ -38,4 +38,25 @@ describe TripPlanner do
     end
   end
 
+  describe "#find_best_routes" do
+    before do
+      @trip_planner = TripPlanner.new flights: sample_flights_data_file
+    end
+
+    it "should collect fastest and cheapest routes for each graph" do
+      graph, fast_route, cheap_route = mock('graph'), mock('fast_route'), mock('cheap_route')
+
+      graph.stubs(:find_cheapest_route).returns(cheap_route)
+      graph.stubs(:find_fastest_route).returns(fast_route)
+
+      @trip_planner.expects(:each_graph).yields(graph)
+
+      results = @trip_planner.find_best_routes
+
+      assert_equal 1, results.size
+      assert_equal cheap_route, results[0].cheapest 
+      assert_equal fast_route, results[0].fastest 
+    end
+  end
+
 end

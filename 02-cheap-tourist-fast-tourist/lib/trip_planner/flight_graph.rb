@@ -6,14 +6,15 @@ class FlightGraph
   
   attr_reader :nodes
 
-  def initialize
+  def initialize(flights = nil)
     @nodes = {}
+    load(flights) unless flights.nil?
   end
 
   def load(flights)
     flights.each do |flight|
       from, to, depart, arrive, cost = flight.split(' ')
-      from , to = from.downcase.to_sym, to.downcase.to_sym
+      from, to = from.downcase.to_sym, to.downcase.to_sym
 
       @nodes[from] ||= Node.new(from)
       @nodes[to] ||= Node.new(to)
@@ -37,12 +38,12 @@ class FlightGraph
   private
 
   def find_route(cost_attribute)
-    best_cost, best_route = nil, nil
+    best_cost, best_route = nil, []
 
     nodes[:a].paths.each do |to, path|
       route_cost, route = cost(path, cost_attribute)
 
-      if best_cost.nil? || route_cost < best_cost
+      if route && route.last.to == :z && (best_cost.nil? || route_cost < best_cost)
         best_cost, best_route = route_cost, route
       end
     end
@@ -50,21 +51,24 @@ class FlightGraph
     [best_cost, best_route]
   end
 
-  def cost(path, cost_attribute)
+  def cost(path, cost_attribute, visited = [])
+    return nil, nil if visited.include? path.to
+
     total, route = path.send(cost_attribute), [path]
+    visited.push(path.from)
 
     unless path.to == :z
       cheapest, cheap_route = nil, nil
       nodes[path.to].paths.each do |to, path|
-        path_cost, a_route = cost(path, cost_attribute)
+        path_cost, a_route = cost(path, cost_attribute, visited)
 
-        if cheapest.nil? || path_cost < cheapest
+        if a_route && (cheapest.nil? || path_cost < cheapest)
           cheapest = path_cost
           cheap_route = a_route
         end 
       end
-      total += cheapest
-      route.concat(cheap_route)
+      total += cheapest unless cheap_route.nil?
+      route.concat(cheap_route) unless cheap_route.nil?
     end
 
     [total, route]

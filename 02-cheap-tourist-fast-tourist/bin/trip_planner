@@ -19,5 +19,9 @@ end
 
 planner = TripPlanner.new(flights: options[:flights])
 
-puts planner.cheapest_trip(:a, :z)
-puts planner.fastest_trip(:a, :z)
+solutions = planner.find_best_routes
+solutions.each do |solution|
+  puts solution.cheapest
+  puts solution.fastest
+  puts
+end
