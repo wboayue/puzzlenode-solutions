@@ -1,6 +1,7 @@
-require 'trip_planner/node'
-
 require 'bigdecimal'
+
+require 'trip_planner/node'
+require 'trip_planner/route'
 
 class FlightGraph
   
@@ -28,11 +29,13 @@ class FlightGraph
   end
 
   def find_cheapest_route
-    find_route :cost
+    a, b = find_route(:cost)
+    [a, b.nil? ? nil : Route.new(b)]
   end
 
   def find_fastest_route
-    find_route :duration_minutes
+    a, b = find_route(:duration_minutes)
+    [a, b.nil? ? nil : Route.new(b)]
   end
 
   private
