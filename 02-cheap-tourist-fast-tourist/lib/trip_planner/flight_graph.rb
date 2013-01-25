@@ -32,7 +32,7 @@ class FlightGraph
     cheapest = nil
     
     each_route do |route|
-      cheapest = route if cheapest.nil? || route.cost < cheapest.cost
+      cheapest = route if route.cheaper_than(cheapest)
     end
 
     cheapest
@@ -42,7 +42,7 @@ class FlightGraph
     fastest = nil
     
     each_route do |route|
-      fastest = route if fastest.nil? || route.duration < fastest.duration
+      fastest = route if route.faster_than(fastest)
     end
 
     fastest
@@ -65,7 +65,7 @@ class FlightGraph
       block.call Route.new(visited)
     else 
       source.to.edges.each do |destination|
-        next if source.arrive > destination.depart
+        next if source.arrive >= destination.depart
         enumerate_routes(destination, block, visited.dup)
       end
     end

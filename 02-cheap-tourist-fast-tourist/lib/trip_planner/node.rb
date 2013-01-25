@@ -13,8 +13,4 @@ class Node
     edges.push Path.new(self, destination, depart, arrive, cost)
   end
 
-  # def each_destination
-  #   edges.each
-  # end
-
 end

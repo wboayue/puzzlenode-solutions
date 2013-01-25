@@ -62,7 +62,7 @@ describe FlightGraph do
       @flight_graph.load(sample_simple_flight_graph)
     end
 
-    it "should enumerate all rouets" do
+    it "should enumerate all routes" do
       expected_routes = [
         "09:00 13:30 200.00",
         "10:00 12:00 300.00"
