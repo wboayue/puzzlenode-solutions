@@ -71,49 +71,6 @@ class FlightGraph
     end
   end
 
-  def find_route(cost_attribute)
-    best_cost, best_route = nil, []
-
-    nodes[:a].edges.each do |path|
-      route_cost, route = cost(path, cost_attribute, path.depart)
-
-      if route && route.last.to.name == :z && (best_cost.nil? || route_cost < best_cost)
-        best_cost = route_cost
-        best_route = route
-      end
-    end
-
-    [best_cost, best_route]
-  end
-
-  def cost(source, cost_attribute, start_time, visited = [])
-    return nil, nil if visited.include? source
-
-    route = [source]
-    total = source.send(cost_attribute)
-    total += ((source.depart - start_time) / 60) if cost_attribute == :duration_minutes
-
-    visited.push(source)
-
-    unless source.to.name == :z
-      cheapest, cheap_route = nil, nil
-      source.to.edges.each do |destination|
-        next if source.arrive > destination.depart
-
-        path_cost, a_route = cost(destination, cost_attribute, source.arrive, visited)
-
-        if a_route && (cheapest.nil? || path_cost < cheapest)
-          cheapest = path_cost
-          cheap_route = a_route
-        end 
-      end
-      total += cheapest unless cheap_route.nil?
-      route.concat(cheap_route) unless cheap_route.nil?
-    end
-
-    [total, route]
-  end
-
   def to_time(value)
     hour, min = value.split(':')
     time_a = base_time.dup
