@@ -5,7 +5,7 @@ require "mocha/setup"
 
 module TestHelper
   
-  def sample_flight_graph_one
+  def sample_simple_flight_graph
     [
       "A B 09:00 10:00 100.00",
       "B Z 11:30 13:30 100.00",
@@ -13,7 +13,7 @@ module TestHelper
     ]
   end
 
-  def sample_flight_graph_two
+  def sample_complex_flight_graph
     [
       "A B 08:00 09:00 50.00",
       "A B 12:00 13:00 300.00",

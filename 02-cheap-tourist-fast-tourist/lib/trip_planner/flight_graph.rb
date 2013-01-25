@@ -57,16 +57,18 @@ class FlightGraph
     [best_cost, best_route]
   end
 
-  def cost(path, cost_attribute, visited = [])
-    return nil, nil if visited.include? path
+  def cost(source, cost_attribute, visited = [])
+    return nil, nil if visited.include? source
 
-    total, route = path.send(cost_attribute), [path]
+    total, route = source.send(cost_attribute), [source]
 
-    visited.push(path)
+    visited.push(source)
 
-    unless path.to == :z
+    unless source.to == :z
       cheapest, cheap_route = nil, nil
-      nodes[path.to].edges.each do |path|
+      nodes[source.to].edges.each do |path|
+        next if source.arrive >= path.arrive
+
         path_cost, a_route = cost(path, cost_attribute, visited)
 
         if a_route && (cheapest.nil? || path_cost < cheapest)

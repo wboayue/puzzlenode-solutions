@@ -25,8 +25,8 @@ describe TripPlanner do
     it "should create graph for each set of edges" do
       graph_one, graph_two = mock('graph_one'), mock('graph_two')
 
-      @trip_planner.expects(:create_graph).with(sample_flight_graph_one).returns(graph_one)
-      @trip_planner.expects(:create_graph).with(sample_flight_graph_two).returns(graph_two)
+      @trip_planner.expects(:create_graph).with(sample_simple_flight_graph).returns(graph_one)
+      @trip_planner.expects(:create_graph).with(sample_complex_flight_graph).returns(graph_two)
 
       graphs = []
 
