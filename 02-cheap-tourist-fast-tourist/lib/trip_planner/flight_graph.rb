@@ -3,8 +3,6 @@ require 'bigdecimal'
 require 'trip_planner/node'
 require 'trip_planner/route'
 
-#TODO fix donkey datastructure. support multiple paths to same node
-
 class FlightGraph
   
   attr_reader :nodes
@@ -48,7 +46,7 @@ class FlightGraph
     nodes[:a].edges.each do |path|
       route_cost, route = cost(path, cost_attribute)
 
-      if route && route.last.to == :z && (best_cost.nil? || route_cost < best_cost)
+      if route && route.last.to.name == :z && (best_cost.nil? || route_cost < best_cost)
         best_cost = route_cost
         best_route = route
       end
@@ -64,12 +62,12 @@ class FlightGraph
 
     visited.push(source)
 
-    unless source.to == :z
+    unless source.to.name == :z
       cheapest, cheap_route = nil, nil
-      nodes[source.to].edges.each do |path|
-        next if source.arrive >= path.arrive
+      source.to.edges.each do |destination|
+        next if source.arrive > destination.depart
 
-        path_cost, a_route = cost(path, cost_attribute, visited)
+        path_cost, a_route = cost(destination, cost_attribute, visited)
 
         if a_route && (cheapest.nil? || path_cost < cheapest)
           cheapest = path_cost

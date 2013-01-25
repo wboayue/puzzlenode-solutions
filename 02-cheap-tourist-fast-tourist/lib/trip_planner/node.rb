@@ -10,7 +10,11 @@ class Node
   end
 
   def create_edge(destination, depart, arrive, cost)
-    edges.push Path.new(name, destination.name, depart, arrive, cost)
+    edges.push Path.new(self, destination, depart, arrive, cost)
   end
+
+  # def each_destination
+  #   edges.each
+  # end
 
 end

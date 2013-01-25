@@ -14,7 +14,7 @@ class Path
     departs = @depart.strftime('%H:%M')
     arrives = @arrive.strftime('%H:%M')
 
-    "#{from.upcase} #{to.upcase} #{departs} #{arrives} #{'%.2f' % cost}"
+    "#{from.name.upcase} #{to.name.upcase} #{departs} #{arrives} #{'%.2f' % cost}"
   end
 
 end
