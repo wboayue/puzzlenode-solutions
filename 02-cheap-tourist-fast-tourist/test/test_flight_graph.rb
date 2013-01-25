@@ -56,6 +56,29 @@ describe FlightGraph do
     end
   end
 
+  describe "#each_route" do
+    before do
+      @flight_graph = FlightGraph.new
+      @flight_graph.load(sample_simple_flight_graph)
+    end
+
+    it "should enumerate all rouets" do
+      expected_routes = [
+        "09:00 13:30 200.00",
+        "10:00 12:00 300.00"
+      ]
+
+      actual_routes = []
+
+      @flight_graph.each_route do |route|
+        actual_routes.push route.to_s
+      end
+
+      assert_equal expected_routes, actual_routes
+    end
+
+  end
+
   describe "given simple sample dataset" do
     before do
       @flight_graph = FlightGraph.new sample_simple_flight_graph
@@ -87,8 +110,6 @@ describe FlightGraph do
 
     it "finds the fastest route" do
       route = @flight_graph.find_fastest_route
-
-      route.edges.each { |e| puts e}
 
       assert_equal "12:00 16:30 550.00", route.to_s
     end

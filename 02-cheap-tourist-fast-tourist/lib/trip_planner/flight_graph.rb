@@ -29,22 +29,53 @@ class FlightGraph
   end
 
   def find_cheapest_route
-    a, b = find_route(:cost)
-    b.nil? ? nil : Route.new(b)
+    cheapest = nil
+    
+    each_route do |route|
+      cheapest = route if cheapest.nil? || route.cost < cheapest.cost
+    end
+
+    cheapest
   end
 
   def find_fastest_route
-    a, b = find_route(:duration_minutes)
-    b.nil? ? nil : Route.new(b)
+    fastest = nil
+    
+    each_route do |route|
+      fastest = route if fastest.nil? || route.duration < fastest.duration
+    end
+
+    fastest
+  end
+
+  def each_route(&block)
+    nodes[:a].edges.each do |destination|
+      enumerate_routes(destination, block)
+    end    
   end
 
   private
+
+  def enumerate_routes(source, block, visited = [])
+    return if visited.include? source
+
+    visited.push(source)
+
+    if source.to.name == :z
+      block.call Route.new(visited)
+    else 
+      source.to.edges.each do |destination|
+        next if source.arrive > destination.depart
+        enumerate_routes(destination, block, visited.dup)
+      end
+    end
+  end
 
   def find_route(cost_attribute)
     best_cost, best_route = nil, []
 
     nodes[:a].edges.each do |path|
-      route_cost, route = cost(path, cost_attribute)
+      route_cost, route = cost(path, cost_attribute, path.depart)
 
       if route && route.last.to.name == :z && (best_cost.nil? || route_cost < best_cost)
         best_cost = route_cost
@@ -55,10 +86,12 @@ class FlightGraph
     [best_cost, best_route]
   end
 
-  def cost(source, cost_attribute, visited = [])
+  def cost(source, cost_attribute, start_time, visited = [])
     return nil, nil if visited.include? source
 
-    total, route = source.send(cost_attribute), [source]
+    route = [source]
+    total = source.send(cost_attribute)
+    total += ((source.depart - start_time) / 60) if cost_attribute == :duration_minutes
 
     visited.push(source)
 
@@ -67,7 +100,7 @@ class FlightGraph
       source.to.edges.each do |destination|
         next if source.arrive > destination.depart
 
-        path_cost, a_route = cost(destination, cost_attribute, visited)
+        path_cost, a_route = cost(destination, cost_attribute, source.arrive, visited)
 
         if a_route && (cheapest.nil? || path_cost < cheapest)
           cheapest = path_cost

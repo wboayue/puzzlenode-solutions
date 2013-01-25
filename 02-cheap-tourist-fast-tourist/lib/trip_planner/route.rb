@@ -19,6 +19,10 @@ class Route
     @edges.map(&:cost).inject(0, :+)
   end
 
+  def duration
+    @edges.last.arrive - @edges.first.depart 
+  end
+
   def to_s
     return "" if @edges.empty?
     departs = @edges.first.depart.strftime('%H:%M')
