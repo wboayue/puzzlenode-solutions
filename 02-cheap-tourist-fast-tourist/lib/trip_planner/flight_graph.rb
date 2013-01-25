@@ -3,6 +3,8 @@ require 'bigdecimal'
 require 'trip_planner/node'
 require 'trip_planner/route'
 
+#TODO fix donkey datastructure. support multiple paths to same node
+
 class FlightGraph
   
   attr_reader :nodes
@@ -30,12 +32,12 @@ class FlightGraph
 
   def find_cheapest_route
     a, b = find_route(:cost)
-    [a, b.nil? ? nil : Route.new(b)]
+    b.nil? ? nil : Route.new(b)
   end
 
   def find_fastest_route
     a, b = find_route(:duration_minutes)
-    [a, b.nil? ? nil : Route.new(b)]
+    b.nil? ? nil : Route.new(b)
   end
 
   private
@@ -43,11 +45,12 @@ class FlightGraph
   def find_route(cost_attribute)
     best_cost, best_route = nil, []
 
-    nodes[:a].paths.each do |to, path|
+    nodes[:a].edges.each do |path|
       route_cost, route = cost(path, cost_attribute)
 
       if route && route.last.to == :z && (best_cost.nil? || route_cost < best_cost)
-        best_cost, best_route = route_cost, route
+        best_cost = route_cost
+        best_route = route
       end
     end
 
@@ -55,14 +58,15 @@ class FlightGraph
   end
 
   def cost(path, cost_attribute, visited = [])
-    return nil, nil if visited.include? path.to
+    return nil, nil if visited.include? path
 
     total, route = path.send(cost_attribute), [path]
-    visited.push(path.from)
+
+    visited.push(path)
 
     unless path.to == :z
       cheapest, cheap_route = nil, nil
-      nodes[path.to].paths.each do |to, path|
+      nodes[path.to].edges.each do |path|
         path_cost, a_route = cost(path, cost_attribute, visited)
 
         if a_route && (cheapest.nil? || path_cost < cheapest)

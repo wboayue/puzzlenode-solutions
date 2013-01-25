@@ -2,14 +2,15 @@ require 'trip_planner/path'
 
 class Node
   
-  attr_accessor :name, :paths
+  attr_accessor :name, :edges
 
-  def initialize(name, paths = {})
-    @name, @paths = name, paths
+  def initialize(name, edges = [])
+    @name = name
+    @edges = edges
   end
 
   def create_edge(destination, depart, arrive, cost)
-    paths[destination.name] = Path.new(name, destination.name, depart, arrive, cost)
+    edges.push Path.new(name, destination.name, depart, arrive, cost)
   end
 
 end

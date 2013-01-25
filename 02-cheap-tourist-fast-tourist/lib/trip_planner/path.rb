@@ -10,4 +10,11 @@ class Path
     (@arrive - @depart) / 60
   end
 
+  def to_s
+    departs = @depart.strftime('%H:%M')
+    arrives = @arrive.strftime('%H:%M')
+
+    "#{from.upcase} #{to.upcase} #{departs} #{arrives} #{'%.2f' % cost}"
+  end
+
 end
