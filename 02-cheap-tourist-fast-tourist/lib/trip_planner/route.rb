@@ -18,16 +18,16 @@ class Route
     edges.map(&:cost).inject(0, :+)
   end
 
-  def duration
-    last_flight.arrive_at - first_flight.depart_at 
+  def duration_in_minutes
+    (last_flight.arrive_at - first_flight.depart_at) / 60 
   end
 
   def cheaper_than?(other)
-    less_than?(other, :cost, :duration)
+    less_than?(other, :cost, :duration_in_minutes)
   end
 
   def faster_than?(other)
-    less_than?(other, :duration, :cost)
+    less_than?(other, :duration_in_minutes, :cost)
   end
 
   def to_s
