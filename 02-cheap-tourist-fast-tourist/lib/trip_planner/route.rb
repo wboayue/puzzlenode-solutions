@@ -1,25 +1,21 @@
 class Route
 
-  attr_accessor :edges
+  attr_reader :edges
 
   def initialize(edges = [])
     @edges = edges
   end
 
   def first_flight
-    @edges.first
+    edges.first
   end
 
   def last_flight
-    @edges.last
-  end
-
-  def size
-    @edges.size
+    edges.last
   end
 
   def cost
-    @edges.map(&:cost).inject(0, :+)
+    edges.map(&:cost).inject(0, :+)
   end
 
   def duration
