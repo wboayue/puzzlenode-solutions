@@ -2,17 +2,20 @@ class Route
 
   attr_accessor :edges
 
-
   def initialize(edges = [])
     @edges = edges
   end
 
-  def size
-    @edges.size
+  def first_flight
+    @edges.first
   end
 
-  def [](i)
-    @edges[i]
+  def last_flight
+    @edges.last
+  end
+
+  def size
+    @edges.size
   end
 
   def cost
@@ -20,10 +23,10 @@ class Route
   end
 
   def duration
-    @edges.last.arrive_at - @edges.first.depart_at 
+    last_flight.arrive_at - first_flight.depart_at 
   end
 
-  def cheaper_than(other)
+  def cheaper_than?(other)
     return true if other.nil?
 
     if self.cost == other.cost
@@ -33,7 +36,7 @@ class Route
     end
   end
 
-  def faster_than(other)
+  def faster_than?(other)
     return true if other.nil?
 
     if self.duration == other.duration
@@ -43,20 +46,9 @@ class Route
     end
   end
 
-  def to_s_detailed
-    s = ""
-    @edges.each do |e|
-      s << e.to_s << " -> "
-    end
-    s 
-  end
-
   def to_s
-    return "" if @edges.empty?
-    departs = @edges.first.depart_at
-    arrives = @edges.last.arrive_at
-
-    "#{format_time(departs)} #{format_time(arrives)} #{'%.2f' % cost}"
+    return "" if edges.empty?
+    "#{format_time(first_flight.depart_at)} #{format_time(last_flight.arrive_at)} #{'%.2f' % cost}"
   end
 
   def format_time(time)

@@ -32,7 +32,7 @@ class FlightGraph
     cheapest = nil
     
     each_route do |route|
-      cheapest = route if route.cheaper_than(cheapest)
+      cheapest = route if route.cheaper_than?(cheapest)
     end
 
     cheapest
@@ -42,7 +42,7 @@ class FlightGraph
     fastest = nil
     
     each_route do |route|
-      fastest = route if route.faster_than(fastest)
+      fastest = route if route.faster_than?(fastest)
     end
 
     fastest
