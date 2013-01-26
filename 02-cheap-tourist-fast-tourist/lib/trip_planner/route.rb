@@ -20,7 +20,7 @@ class Route
   end
 
   def duration
-    @edges.last.arrive - @edges.first.depart 
+    @edges.last.arrive_at - @edges.first.depart_at 
   end
 
   def cheaper_than(other)
@@ -53,10 +53,14 @@ class Route
 
   def to_s
     return "" if @edges.empty?
-    departs = @edges.first.depart.strftime('%H:%M')
-    arrives = @edges.last.arrive.strftime('%H:%M')
+    departs = @edges.first.depart_at
+    arrives = @edges.last.arrive_at
 
-    "#{departs} #{arrives} #{'%.2f' % cost}"
+    "#{format_time(departs)} #{format_time(arrives)} #{'%.2f' % cost}"
+  end
+
+  def format_time(time)
+    time.strftime('%H:%M')
   end
 
 end

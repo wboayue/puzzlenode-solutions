@@ -65,7 +65,7 @@ class FlightGraph
       block.call Route.new(visited)
     else 
       source.to.edges.each do |destination|
-        next if source.arrive > destination.depart
+        next if source.arrive_at > destination.depart_at
         enumerate_routes(destination, block, visited.dup)
       end
     end

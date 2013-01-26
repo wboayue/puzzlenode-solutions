@@ -1,4 +1,4 @@
-require 'trip_planner/path'
+require 'trip_planner/edge'
 
 class Node
   
@@ -10,7 +10,7 @@ class Node
   end
 
   def create_edge(destination, depart, arrive, cost)
-    edges.push Path.new(self, destination, depart, arrive, cost)
+    edges.push Edge.new(self, destination, depart, arrive, cost)
   end
 
 end
