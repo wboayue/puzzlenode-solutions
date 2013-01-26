@@ -20,8 +20,8 @@ end
 planner = TripPlanner.new(flights: options[:flights])
 
 solutions = planner.find_best_routes
-solutions.each do |solution|
+solutions.each_with_index do |solution, i|
+  puts if i > 0
   puts solution.cheapest
   puts solution.fastest
-  puts
 end
