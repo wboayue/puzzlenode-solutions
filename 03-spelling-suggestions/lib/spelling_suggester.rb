@@ -24,25 +24,31 @@ class SpellingSuggester
   end
 
   def suggest_word(word, first_option, second_option)
-    lcs_first_option = lcs(word, first_option)
-    lcs_second_option = lcs(word, second_option)
-    result = lcs_first_option.length > lcs_second_option.length ? first_option : second_option
+    lcs_first_option = lcs_len(word, first_option)
+    lcs_second_option = lcs_len(word, second_option)
+    result = lcs_first_option > lcs_second_option ? first_option : second_option
     [word, result] 
   end
 
-  def lcs(x, y)
-    return "" if x.empty? || y.empty?
+  def lcs_len(x, y)
+    n = x.length
+    m = y.length
+    table = {}
 
-    xx = x[0...-1]
-    yy = y[0...-1]
-
-    if x[-1] == y[-1]
-      lcs(xx, yy) + x[-1]
-    else
-      left = lcs(xx, y)
-      right = lcs(x, yy)
-      left.length > right.length ? left : right
+    (0..n).each do |i|
+      (0..m).each do |j|
+        if i == 0 || j == 0
+          table[[i,j]] = 0
+        elsif x[i-1] == y[j-1]
+          table[[i,j]] = table[[i-1, j-1]] + 1
+        else
+          table[[i,j]] = [table[[i-1, j]], table[[i, j-1]]].max
+        end
+      end
     end
+
+    table.values.max
   end
 
+ 
 end

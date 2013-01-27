@@ -6,17 +6,17 @@ describe SpellingSuggester do
   
   include TestHelper
 
-  describe "#lcs" do
+  describe "#lcs_len" do
     before do
       @suggester = SpellingSuggester.new sample_tuples
     end
 
-    it "should find lcs" do
-      assert_equal "remmance", @suggester.lcs("remimance", "remembrance")
-      assert_equal "remince", @suggester.lcs("remimance", "reminiscence")
+    it "should find lcs_len" do
+      assert_equal 8, @suggester.lcs_len("remimance", "remembrance")
+      assert_equal 7, @suggester.lcs_len("remimance", "reminiscence")
 
-      assert_equal "idiely", @suggester.lcs("immediately", "inndietlly")
-      assert_equal "indetlly", @suggester.lcs("incidentally", "inndietlly")
+      assert_equal 6, @suggester.lcs_len("immediately", "inndietlly")
+      assert_equal 8, @suggester.lcs_len("incidentally", "inndietlly")
     end
   end
 
