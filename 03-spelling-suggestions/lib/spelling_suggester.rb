@@ -15,6 +15,21 @@ class SpellingSuggester
     end
   end
 
+  def process_tuples
+    results = []
+    each_tuple do |word, first_option, second_option|
+      results.push(suggest_word(word, first_option, second_option))
+    end
+    results
+  end
+
+  def suggest_word(word, first_option, second_option)
+    lcs_first_option = lcs(word, first_option)
+    lcs_second_option = lcs(word, second_option)
+    result = lcs_first_option.length > lcs_second_option.length ? first_option : second_option
+    [word, result] 
+  end
+
   def lcs(x, y)
     return "" if x.empty? || y.empty?
 

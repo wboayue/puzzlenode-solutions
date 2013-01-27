@@ -2,3 +2,23 @@
 
 require 'trollop'
 require 'spelling_suggester'
+
+parser = Trollop::Parser.new do
+  opt :input_file, "words to process", required: true, type: :string
+end
+
+options = Trollop::with_standard_exception_handling parser do
+  raise Trollop::HelpNeeded if ARGV.empty?
+  parser.parse ARGV
+end
+
+unless File.exists? options[:input_file]
+  puts "data file #{options[:input_file]} does not exist."
+  exit(1)
+end
+
+suggester = SpellingSuggester.new(options[:input_file])
+suggestions = suggester.process_tuples
+suggestions.each do |word, suggestion|
+  puts suggestion
+end
