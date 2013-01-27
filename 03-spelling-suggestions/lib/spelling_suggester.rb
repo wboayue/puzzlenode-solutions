@@ -1,5 +1,20 @@
 class SpellingSuggester
 
+  def initialize(input_file)
+    @input_file = input_file
+  end
+
+  def each_tuple
+    File.open(@input_file) do |data|
+      num_tuples = data.gets.to_i
+
+      num_tuples.times do
+        data.gets
+        yield [data.gets.chomp, data.gets.chomp, data.gets.chomp]
+      end
+    end
+  end
+
   def lcs(x, y)
     return "" if x.empty? || y.empty?
 
