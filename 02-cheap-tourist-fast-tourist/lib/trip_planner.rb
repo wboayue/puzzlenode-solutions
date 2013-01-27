@@ -28,20 +28,20 @@ class TripPlanner
   end
 
   def each_graph
-    data = File.new(flights)
+    File.open(flights) do |data|
+      number_of_graphs = data.gets.chomp.to_i
 
-    number_of_graphs = data.gets.chomp.to_i
+      number_of_graphs.times do
+        data.gets
+        number_of_edges = data.gets.chomp.to_i
 
-    number_of_graphs.times do
-      data.gets
-      number_of_edges = data.gets.chomp.to_i
+        edges = []
+        number_of_edges.times do
+          edges.push(data.gets.chomp)
+        end
 
-      edges = []
-      number_of_edges.times do
-        edges.push(data.gets.chomp)
+        yield create_graph(edges)
       end
-
-      yield create_graph(edges)
     end
   end
 
