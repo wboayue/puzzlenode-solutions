@@ -33,7 +33,6 @@ describe RobotFactory do
   end
 
   describe "#damage" do
-
     it "should detect damage on click 0 at position 1" do
       assert @robot_factory.damage?(0, 1) 
     end
@@ -57,6 +56,16 @@ describe RobotFactory do
     it "should not detect damage on click 1 at position 0" do
       refute @robot_factory.damage?(1, 0) 
     end
+  end
+
+  describe "#calculate_damage" do
+    it "should calulate damage when moving left" do
+      assert_equal 2, @robot_factory.calculate_damage(:direction => :left) 
+    end
+
+    it "should calulate damage when moving right" do
+      assert_equal 3, @robot_factory.calculate_damage(:direction => :right) 
+    end    
   end
 
 end

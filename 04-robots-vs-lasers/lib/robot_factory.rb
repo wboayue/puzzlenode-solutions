@@ -17,4 +17,21 @@ class RobotFactory
     @north_bank.damage?(click, position) || @south_bank.damage?(click, position)
   end
 
+  def calculate_damage(options)
+    result = 0
+    click = 0
+    if options[:direction] == :right
+      @robot_starting_position.upto(@size-1).each do |i|
+        result += 1 if damage?(i, click)
+        click += 1
+      end
+    else
+      @robot_starting_position.downto(0).each do |i|
+        result += 1 if damage?(i, click)
+        click += 1
+      end
+    end
+    result
+  end
+
 end
