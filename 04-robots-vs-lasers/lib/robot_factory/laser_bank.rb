@@ -1,5 +1,7 @@
 class LaserBank
   
+  attr_reader :fires_on
+
   def initialize(arguments)
     arguments = defaults.merge arguments
 
@@ -8,11 +10,7 @@ class LaserBank
   end
 
   def defaults
-    {layout: "", fires_on: {even: false, odd: true}}
-  end
-
-  def fires_on?(click)
-    @fires_on[click]
+    {layout: "", fires_on: {even: false, odd: false}}
   end
 
   def fires_on=(options)
@@ -37,6 +35,10 @@ class LaserBank
 
   def laser_at?(index)
     @lasers[index]
+  end
+
+  def fires_on?(click)
+    @fires_on[click]
   end
 
 end
