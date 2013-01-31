@@ -9,3 +9,4 @@ Ruby solutions to [puzzlenode.com](http://puzzlenode.com) puzzles.
 1. [International trade](https://github.com/wboayue/puzzlenode-solutions/tree/master/01-international-trade)
 2. [Cheap tourist, fast tourist](https://github.com/wboayue/puzzlenode-solutions/tree/master/02-cheap-tourist-fast-tourist)
 3. [Spelling Suggester](https://github.com/wboayue/puzzlenode-solutions/tree/master/03-spelling-suggestions)
+4. [Robots vs Lasers](https://github.com/wboayue/puzzlenode-solutions/tree/master/04-robots-vs-lasers)
