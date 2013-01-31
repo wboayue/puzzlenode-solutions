@@ -1,1 +1,41 @@
-robot_factory.rb
+#!/usr/bin/env ruby
+
+require 'trollop'
+require 'robot_factory'
+
+parser = Trollop::Parser.new do
+  opt :input_file, "robot factories", required: true, type: :string
+end
+
+options = Trollop::with_standard_exception_handling parser do
+  raise Trollop::HelpNeeded if ARGV.empty?
+  parser.parse ARGV
+end
+
+unless File.exists? options[:input_file]
+  puts "data file #{options[:input_file]} does not exist."
+  exit(1)
+end
+
+factory_layout = []
+
+File.readlines(options[:input_file]).each do |line|
+  next if line.chomp.empty?
+
+  factory_layout.push(line.chomp) 
+
+  if factory_layout.size == 3
+    factory = RobotFactory.new factory_layout
+
+    east_damage = factory.calculate_damage(:direction => :east)
+    west_damage = factory.calculate_damage(:direction => :west)
+
+    if factory.calculate_damage(:direction => :east) >= factory.calculate_damage(:direction => :west)
+      puts "GO WEST"
+    else
+      puts "GO EAST"
+    end
+
+    factory_layout = []
+  end
+end

@@ -1,3 +1,5 @@
+require 'robot_factory/laser_bank'
+
 class RobotFactory
 
   attr_reader :north_bank, :south_bank, :size, :robot_starting_position
@@ -18,16 +20,16 @@ class RobotFactory
   end
 
   def calculate_damage(options)
-    result = 0
-    click = 0
-    if options[:direction] == :right
+    result = click = 0
+
+    if options[:direction] == :east
       @robot_starting_position.upto(@size-1).each do |i|
-        result += 1 if damage?(i, click)
+        result += 1 if damage?(click, i)
         click += 1
       end
     else
       @robot_starting_position.downto(0).each do |i|
-        result += 1 if damage?(i, click)
+        result += 1 if damage?(click, i)
         click += 1
       end
     end

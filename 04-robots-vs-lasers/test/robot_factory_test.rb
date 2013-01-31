@@ -60,11 +60,11 @@ describe RobotFactory do
 
   describe "#calculate_damage" do
     it "should calulate damage when moving left" do
-      assert_equal 2, @robot_factory.calculate_damage(:direction => :left) 
+      assert_equal 2, @robot_factory.calculate_damage(:direction => :west) 
     end
 
     it "should calulate damage when moving right" do
-      assert_equal 3, @robot_factory.calculate_damage(:direction => :right) 
+      assert_equal 3, @robot_factory.calculate_damage(:direction => :east) 
     end    
   end
 
