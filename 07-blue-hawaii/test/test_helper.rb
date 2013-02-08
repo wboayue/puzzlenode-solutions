@@ -9,7 +9,7 @@ module TestHelper
    '{"name":"Paradise Inn", "rate":"$250", "cleaning fee":"$120"}'
   end
 
-  def complex_rental
+  def complex_rental_json
   '
   {
       "name":"Fern Grove Lodge",
