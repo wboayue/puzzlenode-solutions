@@ -1,4 +1,5 @@
 require 'blue_hawaii/month_day'
+require 'bigdecimal'
 
 class Season
 
@@ -7,8 +8,8 @@ class Season
   def initialize(data)
     @name = data.keys.first
     @rate = BigDecimal.new data[@name]["rate"][1..-1]
-    @start_on = MonthDay.new *data[@name]["start"][1..-1].split("-")
-    @end_on = MonthDay.new *data[@name]["end"][1..-1].split("-")
+    @start_on = MonthDay.new *data[@name]["start"].split("-")
+    @end_on = MonthDay.new *data[@name]["end"].split("-")
   end
 
   def rental_cost(start_date, end_date)
@@ -26,4 +27,5 @@ class Season
       start_on.before_or_on(date) && end_on.after_or_on(date)
     end
   end
+  
 end

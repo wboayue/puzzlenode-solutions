@@ -23,26 +23,32 @@ class RentalUnit
   end
 
   def rental_cost(start_date, end_date)
-    start_date = Date.strptime start_date, '%Y/%m/%d'
-    end_date = Date.strptime end_date, '%Y/%m/%d'
+    start_date = parse_date(start_date)
+    end_date = parse_date(end_date)
 
     if has_seasons?
-      complex_rental_cost(start_date, end_date)
+      compute_complex_rental_cost(start_date, end_date)
     else
-      simple_rental_cost(start_date, end_date)
+      compute_simple_rental_cost(start_date, end_date)
     end
   end
 
-  def simple_rental_cost(start_date, end_date)
+  private 
+
+  def compute_simple_rental_cost(start_date, end_date)
     num_days = end_date - start_date
     rental_cost = (@rate * BigDecimal.new(num_days.to_s) + @cleaning_fee) * TAX_RATE
     rental_cost.round(2)
   end
 
-  def complex_rental_cost(start_date, end_date)
+  def compute_complex_rental_cost(start_date, end_date)
     rental_cost = seasons.inject(0) {|sum, season| sum + season.rental_cost(start_date, end_date)}
     rental_cost = (rental_cost + @cleaning_fee) * TAX_RATE
     rental_cost.round(2)
+  end
+
+  def parse_date(date)
+    Date.strptime date, '%Y/%m/%d'
   end
 
 end
