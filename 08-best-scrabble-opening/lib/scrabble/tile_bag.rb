@@ -21,7 +21,7 @@ class TileBag
 
     result = true
     letters.each do |key, count|
-      result = result && @counts[key.to_sym] >= count
+      result = result && @counts[key.to_sym] && @counts[key.to_sym] >= count
     end
     result
   end

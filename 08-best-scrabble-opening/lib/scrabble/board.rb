@@ -2,7 +2,7 @@ require 'pp'
 
 class Board
 
-  attr_reader :rows, :columns
+  attr_reader :rows, :columns, :tile_bag
 
   def initialize(options)
     populate_board(options[:board] || [])
@@ -23,6 +23,27 @@ class Board
 
   def score(row, column, word, direction = :across)
     direction == :across ? score_across(row, column, word) : score_down(row, column, word)
+  end
+
+  def can_form?(word)
+    @tile_bag.can_form?(word)
+  end
+
+  def show_move(move)
+    best_board = []
+    @cells.each {|row| best_board.push row.dup}
+
+    if move[:direction] == :across
+      (move[:col]...(move[:col] + move[:word].size)).each do |i|
+        best_board[move[:row]][i] = move[:word][i-move[:col]]
+      end      
+    else
+      (move[:row]...(move[:row] + move[:word].size)).each do |i|
+        best_board[i][move[:col]] = move[:word][i-move[:row]]
+      end      
+    end
+
+    best_board.collect {|cells| cells.join(" ")}
   end
 
   private
