@@ -29,7 +29,7 @@ class Turtle
 
   def turn_right(degrees)
     @direction += degrees
-    @direction =- 360 if @direction > 360
+    @direction -= 360 if @direction > 360
   end
 
   def move_forward(distance)
