@@ -1,11 +1,17 @@
 class TweetParser
 
   def parse(tweet)
-    user = tweet[/^(.*?)\:/, 1]
+    return extract_user(tweet), extract_connections(tweet)
+  end
 
-    connections = tweet.scan(/@([a-zA-Z_]+)/).flatten
+  private 
 
-    [user, connections]
+  def extract_user(tweet)
+    tweet[/^(.*?)\:/, 1]
+  end
+
+  def extract_connections(tweet)
+    tweet.scan(/@([a-zA-Z_]+)/).flatten
   end
 
 end
