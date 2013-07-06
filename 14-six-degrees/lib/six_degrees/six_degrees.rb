@@ -32,7 +32,6 @@ class SixDegrees
 
       puts
     end
-    nil
   end
 
 end

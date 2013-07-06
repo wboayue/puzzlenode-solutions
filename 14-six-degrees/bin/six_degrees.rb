@@ -20,4 +20,4 @@ end
 puzzle = SixDegrees.new
 solution = puzzle.solve(options[:input])
 
-puts puzzle.print(solution)
+puzzle.print(solution)
