@@ -15,6 +15,7 @@ describe TweetParser do
       user.should == 'bob'
       connections.should == ['duncan', 'christie']
     end
+
   end
 
 end
