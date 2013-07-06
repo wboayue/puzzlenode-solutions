@@ -40,6 +40,10 @@ class SocialGraph
     end
   end
 
+  def to_s
+    @graph.inspect
+  end
+
   private
 
   def prune(results)
@@ -52,7 +56,7 @@ class SocialGraph
       if pruned.empty?
         results.delete level
       else
-        results[level] = pruned
+        results[level] = pruned.sort
       end
     end
   end
