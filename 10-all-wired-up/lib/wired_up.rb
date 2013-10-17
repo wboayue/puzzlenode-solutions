@@ -1,0 +1,1 @@
+require 'wired_up/circuit'
