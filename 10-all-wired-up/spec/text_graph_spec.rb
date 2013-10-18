@@ -18,7 +18,7 @@ describe TextGraph do
     it "finds root node of graph" do
       root = graph.find_root
 
-      expect(root.type).to eq('@')
+      expect(root.value).to eq('@')
       expect(root.x).to eq(40)
       expect(root.y).to eq(3)
     end    
@@ -38,7 +38,7 @@ describe TextGraph do
     it "finds direct node from specified location" do
       node = graph.find_direct_node(40, 3)
 
-      expect(node.type).to eq('X')
+      expect(node.value).to eq('X')
       expect(node.x).to eq(27)
       expect(node.y).to eq(3)
     end
@@ -58,7 +58,7 @@ describe TextGraph do
     it "finds left node from specified location" do
       node = graph.find_left_node(14, 1)
 
-      expect(node.type).to eq('0')
+      expect(node.value).to eq('1')
       expect(node.x).to eq(0)
       expect(node.y).to eq(2)
     end
@@ -78,7 +78,7 @@ describe TextGraph do
     it "finds right node from specified location" do
       node = graph.find_right_node(14, 1)
 
-      expect(node.type).to eq('1')
+      expect(node.value).to eq('0')
       expect(node.x).to eq(0)
       expect(node.y).to eq(0)
     end
