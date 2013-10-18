@@ -10,6 +10,7 @@ describe TextGraph do
       "1-------------|            |",
       "              N------------|"
     ]
+
     TextGraph.new lines
   }
 
@@ -30,6 +31,36 @@ describe TextGraph do
 
     it "indicates direct path is not available" do
       expect(graph.direct_path?(27, 3)).to eq(false)
+    end
+  end
+
+  describe "#find_direct_node" do
+    it "finds direct node from specified location" do
+      node = graph.find_direct_node(40, 3)
+
+      expect(node.type).to eq('X')
+      expect(node.x).to eq(27)
+      expect(node.y).to eq(3)
+    end
+  end
+
+  describe "#left_path?" do
+    it "indicates left path is available" do
+      expect(graph.left_path?(14, 1)).to eq(true)
+    end
+
+    it "indicates left path is not available" do
+      expect(graph.left_path?(14, 5)).to eq(false)
+    end
+  end
+
+  describe "#right_path?" do
+    it "indicates right path is available" do
+      expect(graph.right_path?(14, 1)).to eq(true)
+    end
+
+    it "indicates right path is not available" do
+      expect(graph.right_path?(0, 0)).to eq(false)
     end
   end
 
