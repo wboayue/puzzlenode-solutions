@@ -54,6 +54,16 @@ describe TextGraph do
     end
   end
 
+  describe "#find_left_node" do
+    it "finds left node from specified location" do
+      node = graph.find_left_node(14, 1)
+
+      expect(node.type).to eq('0')
+      expect(node.x).to eq(0)
+      expect(node.y).to eq(2)
+    end
+  end
+
   describe "#right_path?" do
     it "indicates right path is available" do
       expect(graph.right_path?(14, 1)).to eq(true)
@@ -61,6 +71,16 @@ describe TextGraph do
 
     it "indicates right path is not available" do
       expect(graph.right_path?(0, 0)).to eq(false)
+    end
+  end
+
+  describe "#find_right_node" do
+    it "finds right node from specified location" do
+      node = graph.find_right_node(14, 1)
+
+      expect(node.type).to eq('1')
+      expect(node.x).to eq(0)
+      expect(node.y).to eq(0)
     end
   end
 
