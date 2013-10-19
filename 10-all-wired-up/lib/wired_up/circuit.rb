@@ -2,25 +2,15 @@ require 'wired_up/node'
 
 class Circuit
 
-  attr_reader :lines
+  attr_reader :graph
 
   def initialize(lines)
-    @lines = lines
-
-    root_pos = Circuit.find_root(lines)
-    @root = Node.new(self, x: root_pos[:x], y: root_pos[:y], type: '@')
+    @graph = TextGraph.new(lines)
+    @root = Node.new(@graph, @graph.find_root) 
   end
 
-  def self.find_root(lines)
-    {}.tap do |result|
-      lines.each_with_index do |line, i|
-        if x = line.index('@')
-          result[:x] = x
-          result[:y] = i
-          break
-        end
-      end
-    end  
+  def powered?
+    @root.powered?
   end
 
   def self.load_circuits(data_file)
@@ -33,6 +23,7 @@ class Circuit
 
       if line.empty?
         circuits.push Circuit.new(circuit)
+        circuit = []
       else
         circuit.push line
       end

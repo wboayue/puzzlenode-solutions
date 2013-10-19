@@ -7,21 +7,13 @@ describe Circuit do
     it "creates circuit for each circuit in datafile" do
       expect(circuits.size).to eq(3)
     end
-  end
 
-  describe "#find_root" do
-    let(:circuit) {
-      [ 
-        "0-------------|",
-        "              |",
-        "              O-----------@",
-        "1-------------|"
-      ]
-    }
+    it "indicates correct state of circuit" do
+      expect(circuits[0].powered?).to eq(true)
+      expect(circuits[1].powered?).to eq(false)
+      expect(circuits[2].powered?).to eq(true)
+    end
 
-    it "finds root node of circuit" do
-      expect(Circuit.find_root(circuit)).to eq({x: 26, y: 2})
-    end    
   end
 
 end
