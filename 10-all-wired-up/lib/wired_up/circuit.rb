@@ -13,6 +13,12 @@ class Circuit
     @root.powered?
   end
 
+  def self.solve(data_file)
+    Circuit.load_circuits(data_file).each do |circuit|
+      puts circuit.powered? ? "on" : "off"
+    end
+  end
+
   def self.load_circuits(data_file)
     f = File.new(data_file)
 
