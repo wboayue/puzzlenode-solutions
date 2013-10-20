@@ -1,0 +1,12 @@
+require 'rspec/core/rake_task'
+
+RSpec::Core::RakeTask.new(:spec)
+
+task :default => :spec
+
+desc "Solve puzzle"
+task :solve do
+  $LOAD_PATH.unshift("#{File.dirname(__FILE__)}/lib")
+  require 'rock_bottom'
+  RockBottom.solve
+end
