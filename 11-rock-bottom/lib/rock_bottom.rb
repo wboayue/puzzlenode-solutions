@@ -10,22 +10,12 @@ module RockBottom
 
     units = Integer(iter.next)
 
-    iter.next
+    iter.next # skip blank line
 
-    layout  = self.get_cave iter
-
-    cave = Cave.new layout
+    cave = Cave.new iter.to_a
     cave.pour(units - 1)
     # cave.print
     cave.chart
   end
 
-  def self.get_cave(enum)
-    lines = []
-    while true
-      lines.push enum.next.chomp
-    end
-  rescue StopIteration
-    lines
-  end
 end
