@@ -3,18 +3,17 @@ require 'rock_bottom/cave'
 module RockBottom
 
   def self.solve
-    data_file = File.join(File.dirname(__FILE__), '../spec/data/complex_cave.txt')
+    data_file = File.new(File.join(File.dirname(__FILE__), '../spec/data/complex_cave.txt'))
+    
+    enum = data_file.each_line
 
-    f = File.new data_file
-    iter = f.each_line
+    units = Integer(enum.next)
 
-    units = Integer(iter.next)
+    enum.next # skip blank line
 
-    iter.next # skip blank line
+    cave = Cave.new enum.to_a
 
-    cave = Cave.new iter.to_a
     cave.pour(units - 1)
-    # cave.print
     cave.chart
   end
 

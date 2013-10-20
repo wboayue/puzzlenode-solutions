@@ -53,12 +53,6 @@ describe RockBottom::Cave do
       cave.pour(1)
       expect(cave[*pos]).to eq('~')
     end
-    cave.print
-  end  
-
-  it "flows water along expected path" do
-    cave.pour(44)
-    cave.print
   end  
 
 end
