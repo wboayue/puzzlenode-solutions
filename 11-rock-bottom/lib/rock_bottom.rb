@@ -3,7 +3,7 @@ require 'rock_bottom/cave'
 module RockBottom
 
   def self.solve
-    data_file = File.join(File.dirname(__FILE__), '../spec/data/simple_cave.txt')
+    data_file = File.join(File.dirname(__FILE__), '../spec/data/complex_cave.txt')
 
     f = File.new data_file
     iter = f.each_line
@@ -16,7 +16,7 @@ module RockBottom
 
     cave = Cave.new layout
     cave.pour(units - 1)
-    cave.print
+    # cave.print
     cave.chart
   end
 

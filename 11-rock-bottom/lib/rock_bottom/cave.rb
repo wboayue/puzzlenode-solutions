@@ -43,15 +43,23 @@ module RockBottom
     def chart
       text = "#{measure(0)}"
       (1...width).each do |x|
-        text += " #{measure(x)} "
+        text += " #{measure(x)}"
       end
       puts text
     end
 
     def measure(x)
+      counting = false
       value = 0
       (0...depth).each do |y|
-        value += 1 if self[x, y] == '~'
+        if self[x, y] == '~'
+          value += 1
+          counting = true
+        else
+          if counting
+            return '~' if self[x, y] != '#'
+          end 
+        end
       end
       value
     end
