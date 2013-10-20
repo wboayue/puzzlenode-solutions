@@ -1,5 +1,6 @@
 require 'wired_up'
 
+module WiredUp
 describe TextGraph do
   let(:graph) {
     lines = [
@@ -83,5 +84,7 @@ describe TextGraph do
       expect(node.y).to eq(0)
     end
   end
+
+end
 
 end

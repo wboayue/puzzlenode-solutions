@@ -8,5 +8,5 @@ desc "Solve puzzle"
 task :solve do
   $LOAD_PATH.unshift("#{File.dirname(__FILE__)}/lib")
   require 'wired_up'
-  Circuit.solve File.join(File.dirname(__FILE__), 'spec/data/complex_circuits.txt')
+  WiredUp.solve
 end
