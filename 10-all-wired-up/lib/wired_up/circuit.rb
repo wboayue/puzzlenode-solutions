@@ -22,21 +22,22 @@ module WiredUp
     end
 
     def self.load_circuits(data_file)
-      f = File.new(data_file)
 
       circuits, circuit = [], []
 
-      f.each_line do |line|
-        line = line.chomp
+      File.open(data_file) do |f|
+        f.each_line do |line|
+          line = line.chomp
 
-        if line.empty?
-          circuits.push Circuit.new(circuit)
-          circuit = []
-        else
-          circuit.push line
+          if line.empty?
+            circuits.push Circuit.new(circuit)
+            circuit = []
+          else
+            circuit.push line
+          end
         end
       end
-      
+
       circuits.push Circuit.new(circuit) unless circuit.empty?
 
       circuits
