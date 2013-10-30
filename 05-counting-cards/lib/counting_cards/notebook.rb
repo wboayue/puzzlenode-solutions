@@ -1,3 +1,5 @@
+require 'counting_cards/signal_collection'
+
 module CountingCards
   
   class Notebook
@@ -7,7 +9,7 @@ module CountingCards
       @file_name = file_name
     end
 
-    def each_note(&block)
+    def each_event(&block)
       File.open(file_name) do |file|
         signals = []
 
@@ -16,7 +18,7 @@ module CountingCards
           process_event(event, signals, &block)
         end
 
-        yield signals unless signals.empty?
+        yield SignalCollection.new(signals) unless signals.empty?
       end
     end
 
@@ -27,7 +29,7 @@ module CountingCards
         signals.push event
       else
         unless signals.empty?
-          yield signals
+          yield SignalCollection.new(signals)
           signals.clear
         end
         yield event

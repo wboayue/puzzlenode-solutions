@@ -10,5 +10,9 @@ module CountingCards
       @moves = tokens.map { |text| Move.new text }
     end
 
+    def apply_to(game)
+      game.signaled = false
+    end
+
   end
 end
