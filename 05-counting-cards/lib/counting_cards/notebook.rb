@@ -11,36 +11,34 @@ module CountingCards
 
     def each_event(&block)
       File.open(file_name) do |file|
-        signals = []
+        enumerator = file.each_line
+        loop do
+          line = enumerator.next.chomp
+          round = decode_round(line)
+          round.signals = decode_signals(enumerator) if has_signals?(enumerator)
 
-        file.each_line do |line|
-          event = decode_line(line.chomp)
-          process_event(event, signals, &block)
+          yield round
         end
-
-        yield SignalCollection.new(signals) unless signals.empty?
       end
     end
 
     private 
 
-    def process_event(event, signals, &block)
-      if event.class == Signal
-        signals.push event
-      else
-        unless signals.empty?
-          yield SignalCollection.new(signals)
-          signals.clear
-        end
-        yield event
-      end
+    def has_signals?(enumerator)
+      line = enumerator.peek
+      line && line[0] == '*'
     end
 
-    def decode_line(line)
-      if line[0] == '*'
-        Signal.new(line)
-      else
-        Round.new(line)
+    def decode_round(line)
+      Round.new(line)
+    end
+
+    def decode_signals(enumerator)
+      signals = []
+      loop do
+        line = enumerator.peek
+        return signals if line.nil? || line[0] != '*'
+        signals.push Signal.new(enumerator.next.chomp)
       end
     end
   end

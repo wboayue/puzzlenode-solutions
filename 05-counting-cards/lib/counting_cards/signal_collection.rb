@@ -7,5 +7,8 @@ module CountingCards
       game.signaled = true
     end
 
+    def player
+    end
+    
   end
 end

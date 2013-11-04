@@ -24,12 +24,16 @@ module CountingCards
     def playback(data_file)
       Notebook.new(data_file).each_event do |event|
         event.apply_to(self)
-        puts show_hand('Lil') if signaled?
+        puts show_hand('Lil') if event.player == 'Lil'
       end       
     end
 
+    def [](player)
+      players[player]
+    end
+
     def show_hand(player)
-      player
+      self[player].hand
     end
 
   end

@@ -2,7 +2,7 @@ require 'counting_cards/move'
 
 module CountingCards
   class Round
-    attr_accessor :player, :moves
+    attr_accessor :player, :moves, :signals
 
     def initialize(text)
       tokens = text.split(' ')
@@ -11,7 +11,9 @@ module CountingCards
     end
 
     def apply_to(game)
-      game.signaled = false
+      moves.each do |move|
+        game[player].add_move move
+      end
     end
 
   end

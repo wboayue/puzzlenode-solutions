@@ -1,6 +1,5 @@
 require 'counting_cards/round'
 require 'counting_cards/signal'
-require 'counting_cards/signal_collection'
 require 'counting_cards/move'
 require 'counting_cards/notebook'
 require 'counting_cards/game'

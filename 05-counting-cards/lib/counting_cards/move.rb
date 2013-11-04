@@ -9,6 +9,10 @@ module CountingCards
       @actor = decode_actor(text)
     end
 
+    def to_s
+      "#{type}#{card}:#{actor}"
+    end
+
     private 
 
     def decode_actor(text)
