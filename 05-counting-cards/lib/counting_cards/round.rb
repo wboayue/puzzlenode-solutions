@@ -8,12 +8,12 @@ module CountingCards
       tokens = text.split(' ')
       @player = tokens.shift
       @moves = tokens.map { |text| Move.new text }
+      @signals = []
     end
 
     def apply_to(game)
-      moves.each do |move|
-        game[player].add_move move
-      end
+      game[player].process_moves moves
+      game[player].process_signals signals
     end
 
   end

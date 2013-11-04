@@ -9,10 +9,10 @@ module CountingCards
 
     def initialize
       @players = {
-        'Shady' => Player.new('Shady'),
-        'Rocky' => Player.new('Rocky'),
-        'Danny' => Player.new('Danny'),
-        'Lil' => Player.new('Lil')
+        'Shady' => Player.new('Shady', self),
+        'Rocky' => Player.new('Rocky', self),
+        'Danny' => Player.new('Danny', self),
+        'Lil' => Player.new('Lil', self)
       }
       @discarded = []
     end
@@ -22,9 +22,9 @@ module CountingCards
     end
 
     def playback(data_file)
-      Notebook.new(data_file).each_event do |event|
-        event.apply_to(self)
-        puts show_hand('Lil') if event.player == 'Lil'
+      Notebook.new(data_file).each_round do |round|
+        round.apply_to(self)
+        puts show_hand(round.player) if round.player == 'Lil'
       end       
     end
 
@@ -34,6 +34,10 @@ module CountingCards
 
     def show_hand(player)
       self[player].hand
+    end
+
+    def discard(card)
+      discarded.push card
     end
 
   end

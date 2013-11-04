@@ -1,4 +1,3 @@
-require 'counting_cards/signal_collection'
 
 module CountingCards
   
@@ -9,7 +8,7 @@ module CountingCards
       @file_name = file_name
     end
 
-    def each_event(&block)
+    def each_round
       File.open(file_name) do |file|
         enumerator = file.each_line
         loop do
@@ -37,9 +36,10 @@ module CountingCards
       signals = []
       loop do
         line = enumerator.peek
-        return signals if line.nil? || line[0] != '*'
+        break if line[0] != '*'
         signals.push Signal.new(enumerator.next.chomp)
       end
+      signals
     end
   end
 
